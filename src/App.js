@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import { formatEther } from 'ethers';
 import WinnersList from './components/WinnersList';
+import { createReadOnlyProvider } from './utils/ethers-provider';
 import { 
   connectWallet, 
   setupAccountChangeListener, 
@@ -10,7 +11,7 @@ import {
   switchToZetaChain,
   isMetaMaskInstalled
 } from './utils/metamask';
-import { 
+import {
   getContractWithSigner, 
   getContractReadOnly,
   fetchCurrentWinners,
@@ -78,45 +79,31 @@ function App() {
     }
   };
 
-  // Load winners from the contract
   const loadWinners = async () => {
     setLoadingWinners(true);
     
     try {
-      if (provider) {
-        // Verify that the provider is working before proceeding
+      // Always create a read-only provider if no provider exists
+      const currentProvider = provider || createReadOnlyProvider();
+      
+      if (!currentProvider) {
+        throw new Error("Unable to create provider for fetching winners");
+      }
+  
+      const winnersData = await fetchCurrentWinners(currentProvider);
+      setWinners(winnersData);
+      
+      // Keep existing contract-related logic if contract exists
+      if (contract) {
         try {
-          const blockNumber = await provider.getBlockNumber();
-          console.log("Current block number:", blockNumber);
-        } catch (providerError) {
-          console.error("Provider error:", providerError);
-          setErrorMessage("Network provider error. Please try reconnecting your wallet.");
-          setLoadingWinners(false);
-          return;
-        }
-
-        const winnersData = await fetchCurrentWinners(provider);
-        setWinners(winnersData);
-        
-        // Get the last rewards timestamp
-        if (contract) {
-          try {
-            // Make sure contract is valid and has this function
-            // if (typeof contract.lastRewardsTimestamp === 'function') {
-            //   const timestamp = await contract.lastRewardsTimestamp();
-            //   if (timestamp !== undefined) {
-            //     setLastUpdateTime(Number(timestamp));
-            //   }
-            // } else {
-            //   console.warn("lastRewardsTimestamp function not available on contract");
-            // }
-            
-            // Get time until next rewards
-            // const timeRemaining = await getTimeUntilNextRewards(contract);
-            // setTimeUntilNext(timeRemaining);
-          } catch (contractError) {
-            console.error("Error reading from contract:", contractError);
-          }
+          // Uncomment and implement these when ready
+          // const timestamp = await contract.lastRewardsTimestamp();
+          // setLastUpdateTime(Number(timestamp));
+          
+          // const timeRemaining = await getTimeUntilNextRewards(contract);
+          // setTimeUntilNext(timeRemaining);
+        } catch (contractError) {
+          console.error("Error reading from contract:", contractError);
         }
       }
     } catch (error) {
@@ -177,15 +164,15 @@ function App() {
     // Check if MetaMask is installed
     if (!isMetaMaskInstalled()) {
       setErrorMessage("MetaMask is not installed. Please install MetaMask to use this application.");
-      setLoadingWinners(false);
+      
+      // Load winners even if MetaMask is not installed
+      loadWinners();
       return;
     }
     
     // Setup account change listener
     const accountCleanup = setupAccountChangeListener((newAddress) => {
       setAddress(newAddress);
-      // Reload page to reset state when account changes
-      window.location.reload();
     });
     
     // Setup chain change listener
@@ -193,22 +180,20 @@ function App() {
       setIsCorrectNetwork(parseInt(chainId, 16) === 7001);
     });
     
+    // Always load winners first
+    loadWinners();
+    
     // Try to connect to MetaMask if it's already authorized
     if (window.ethereum) {
       window.ethereum.request({ method: 'eth_accounts' })
         .then(accounts => {
           if (accounts.length > 0) {
             handleConnect();
-          } else {
-            setLoadingWinners(false);
           }
         })
         .catch(err => {
           console.error(err);
-          setLoadingWinners(false);
         });
-    } else {
-      setLoadingWinners(false);
     }
     
     // Cleanup function
@@ -220,25 +205,15 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Load winners when provider changes
-  useEffect(() => {
-    if (provider) {
-      loadWinners();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider, contract]);
-
   // Refresh winners list periodically (every 1 minute)
   useEffect(() => {
-    if (!provider) return;
-    
     const interval = setInterval(() => {
       loadWinners();
     }, 60000);
     
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider]);
+  }, []);
 
   // Countdown timer for next rewards
   useEffect(() => {

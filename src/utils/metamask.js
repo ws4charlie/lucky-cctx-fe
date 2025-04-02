@@ -10,7 +10,7 @@ const ZETACHAIN_TESTNET_CONFIG = {
     symbol: 'tZETA',
     decimals: 18,
   },
-  rpcUrls: ['https://zetachain-athens.blockpi.network/lcd/v1/public'],
+  rpcUrls: ['https://zetachain-athens-evm.blockpi.network/v1/rpc/public'],
   blockExplorerUrls: ['https://zetachain-testnet.blockscout.com/'],
 };
 
