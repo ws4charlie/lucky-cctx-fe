@@ -303,7 +303,7 @@ function App() {
           lastUpdateTime={lastUpdateTime}
         />
         
-        {!address && (
+        {/* {!address && (
           <div className="connect-prompt">
             <p>Connect your MetaMask wallet to check if you're a winner and claim rewards!</p>
             <button 
@@ -314,7 +314,7 @@ function App() {
               {isConnecting ? 'Connecting...' : 'Connect MetaMask'}
             </button>
           </div>
-        )}
+        )} */}
       </main>
       
       <footer className="app-footer">
