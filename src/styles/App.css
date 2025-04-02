@@ -1,0 +1,699 @@
+/* src/styles/App.css */
+:root {
+    --primary-color: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #a5b4fc;
+    --secondary-color: #0ea5e9;
+    --background-color: #f8fafc;
+    --card-background: #ffffff;
+    --text-color: #1e293b;
+    --text-light: #64748b;
+    --border-color: #e2e8f0;
+    --success-color: #10b981;
+    --error-color: #ef4444;
+    --warning-color: #f59e0b;
+    
+    /* Reward Type Colors */
+    --lucky-color: #8b5cf6;    /* Purple for Lucky CCTX */
+    --finality-color: #f59e0b; /* Yellow for Finality Flash */
+    --gas-color: #10b981;      /* Green for Gas Ghost */
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.5;
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Header styles */
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .zeta-logo {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+  }
+  
+  .logo-text h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+  }
+  
+  .logo-text p {
+    font-size: 0.875rem;
+    color: var(--text-light);
+  }
+  
+  /* Wallet connection styles */
+  .wallet-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .wallet-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .balance-display {
+    background-color: #f0fdf4;
+    color: #166534;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .address-display {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    text-decoration: none;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+  
+  .address-display:hover {
+    background-color: var(--border-color);
+  }
+  
+  .external-link-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    color: var(--text-light);
+  }
+  
+  .connect-button, 
+  .network-switch-button, 
+  .claim-button, 
+  .connect-button-large {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .connect-button-large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .network-switch-button {
+    background-color: var(--warning-color);
+  }
+  
+  .connect-button:hover, 
+  .claim-button:hover, 
+  .connect-button-large:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .network-switch-button:hover {
+    background-color: #d97706;
+  }
+  
+  .connect-button:disabled, 
+  .claim-button:disabled, 
+  .connect-button-large:disabled,
+  .network-switch-button:disabled {
+    background-color: var(--text-light);
+    cursor: not-allowed;
+  }
+  
+  .network-alert {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff7ed;
+    color: #9a3412;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    border-bottom: 1px solid #fed7aa;
+  }
+  
+  /* Network banner */
+  .network-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff7ed;
+    border-top: 1px solid #fed7aa;
+    padding: 0.5rem 1rem;
+    z-index: 100;
+  }
+  
+  .network-banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .network-banner-icon {
+    font-size: 1.25rem;
+  }
+  
+  .network-banner-text {
+    flex: 1;
+    font-size: 0.875rem;
+    color: #9a3412;
+  }
+  
+  .network-banner-button {
+    background-color: #ea580c;
+    color: white;
+    border: none;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .network-banner-button:hover {
+    background-color: #c2410c;
+  }
+  
+  /* Main content styles */
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .main-title {
+    font-size: 1.875rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--text-color);
+  }
+  
+  .countdown-timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background-color: #f0f9ff;
+    color: #0369a1;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+  }
+  
+  .time-display {
+    font-family: monospace;
+    font-weight: 600;
+  }
+  
+  .connect-prompt {
+    margin-top: 3rem;
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--card-background);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .connect-prompt p {
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
+  }
+  
+  /* Message styles */
+  .error-message, 
+  .success-message {
+    position: relative;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    margin: 1rem 0;
+    text-align: center;
+  }
+  
+  .error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--error-color);
+    color: var(--error-color);
+  }
+  
+  .success-message {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--success-color);
+    color: var(--success-color);
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: inherit;
+  }
+  
+  /* Winners list styles */
+  .winners-container {
+    margin-top: 2rem;
+    background-color: var(--card-background);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  .last-update-time {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    text-align: right;
+    margin-bottom: 1rem;
+  }
+  
+  .winners-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  .tab-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    background-color: var(--background-color);
+    color: var(--text-light);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  
+  .tab-button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+  }
+  
+  .winners-list-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+  
+  .winner-item {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+  }
+  
+  .winner-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .winner-item.current-user {
+    border-color: var(--primary-color);
+    background-color: rgba(99, 102, 241, 0.05);
+  }
+  
+  .winner-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .winner-address-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .winner-address {
+    font-family: monospace;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  
+  .winner-address:hover {
+    text-decoration: underline;
+  }
+  
+  .you-badge {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+  }
+  
+  .winner-reward-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .reward-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .winner-amount {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .claimed-badge {
+    background-color: var(--success-color);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  /* Loading states */
+  .winners-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    text-align: center;
+    color: var(--text-light);
+  }
+  
+  .loader {
+    border: 3px solid rgba(99, 102, 241, 0.2);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .no-winners {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background-color: var(--card-background);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--text-light);
+  }
+  
+  .no-winners h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+  }
+  
+  .no-winners p {
+    color: var(--text-light);
+  }
+  
+  /* Footer styles */
+  .app-footer {
+    background-color: var(--card-background);
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.875rem;
+  }
+  
+  .contract-address {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .contract-address a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  
+  .contract-address a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .app-header {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    
+    .main-content {
+      padding: 1rem;
+    }
+    
+    .winners-list-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .winner-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .winner-info {
+      width: 100%;
+    }
+    
+    .winner-address-container {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .winners-tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .tab-button {
+      flex-shrink: 0;
+    }
+    
+    .network-banner-content {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .network-banner-text {
+      text-align: center;
+    }
+    
+    .network-banner-button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  
+  /* Dark mode (optional, can be enabled with a toggle) */
+  @media (prefers-color-scheme: dark) {
+    body.dark-mode {
+      --background-color: #0f172a;
+      --card-background: #1e293b;
+      --text-color: #f8fafc;
+      --text-light: #cbd5e1;
+      --border-color: #334155;
+    }
+    
+    body.dark-mode .winner-address {
+      color: #e2e8f0;
+    }
+    
+    body.dark-mode .tab-button {
+      background-color: #1e293b;
+      border-color: #334155;
+      color: #cbd5e1;
+    }
+    
+    body.dark-mode .address-display {
+      background-color: #334155;
+      color: #e2e8f0;
+    }
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .winner-item {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .error-message, 
+  .success-message {
+    animation: fadeIn 0.2s ease-in-out;
+  }
+  
+  /* Utility classes */
+  .text-center {
+    text-align: center;
+  }
+  
+  .mt-1 {
+    margin-top: 0.25rem;
+  }
+  
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1rem;
+  }
+  
+  .mt-8 {
+    margin-top: 2rem;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .mb-8 {
+    margin-bottom: 2rem;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .justify-center {
+    justify-content: center;
+  }
+  
+  .space-between {
+    justify-content: space-between;
+  }
+  
+  .gap-2 {
+    gap: 0.5rem;
+  }
+  
+  .gap-4 {
+    gap: 1rem;
+  }
+  
+  /* Tooltip styles for more info on hover */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.75rem;
+  }
+  
+  .tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+  }
+  
+  .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
