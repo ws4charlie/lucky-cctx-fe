@@ -14,7 +14,6 @@ const ZETACHAIN_TESTNET_CONFIG = {
   blockExplorerUrls: ['https://zetachain-testnet.blockscout.com/'],
 };
 
-// Initialize connection to MetaMask
 export const connectWallet = async () => {
   if (!window.ethereum) {
     throw new Error("MetaMask is not installed. Please install MetaMask and try again.");
@@ -31,17 +30,22 @@ export const connectWallet = async () => {
     const network = await provider.getNetwork();
     
     // Check if we're on ZetaChain Athens testnet
-    if (network.chainId !== 7001) {
+    if (network.chainId !== 7001n) { // Note the 'n' for BigInt
       try {
         await switchToZetaChain();
-        // Refresh the provider to get the updated network
+        // Create a new provider after switching
         const updatedProvider = new BrowserProvider(window.ethereum);
         return {
           address: accounts[0],
           provider: updatedProvider
         };
       } catch (switchError) {
-        throw new Error("Please switch to ZetaChain Athens testnet in your MetaMask wallet.");
+        console.error("Network switch error:", switchError);
+        // Even if switch fails, return the initial connection
+        return {
+          address: accounts[0],
+          provider
+        };
       }
     }
     

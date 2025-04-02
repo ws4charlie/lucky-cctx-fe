@@ -50,7 +50,8 @@ function App() {
       
       // Get network information
       const network = await provider.getNetwork();
-      setIsCorrectNetwork(network.chainId === 7001);
+      const isCorrectNetwork = network.chainId === 7001n;
+      setIsCorrectNetwork(isCorrectNetwork);
       
       // Get contract instance
       const contractInstance = await getContractWithSigner(provider);
@@ -59,9 +60,18 @@ function App() {
       // Get user balance
       const balance = await provider.getBalance(address);
       setBalance(formatEther(balance));
+
+      // If not on correct network, show switch network message
+      if (!isCorrectNetwork) {
+        setErrorMessage("Please switch to ZetaChain Athens network");
+      }
     } catch (error) {
       console.error("Connection error:", error);
       setErrorMessage(error.message || "Failed to connect wallet");
+      // Reset connection state
+      setAddress(null);
+      setProvider(null);
+      setContract(null);
     } finally {
       setIsConnecting(false);
     }
@@ -70,12 +80,36 @@ function App() {
   // Handle network switch
   const handleSwitchNetwork = async () => {
     try {
+      // Attempt to switch network
       await switchToZetaChain();
-      // Reload the page to refresh connections
-      window.location.reload();
+      
+      // If switching succeeds, reconnect
+      if (provider) {
+        const network = await provider.getNetwork();
+        const isCorrectNetwork = network.chainId === 7001n;
+        
+        if (isCorrectNetwork) {
+          // Refresh contract instance and balance
+          const contractInstance = await getContractWithSigner(provider);
+          setContract(contractInstance);
+          
+          const balance = await provider.getBalance(address);
+          setBalance(formatEther(balance));
+          
+          setIsCorrectNetwork(true);
+          setErrorMessage('');
+        } else {
+          throw new Error("Failed to switch to ZetaChain Athens");
+        }
+      }
     } catch (error) {
       console.error("Network switch error:", error);
       setErrorMessage(error.message || "Failed to switch network");
+      
+      // Reset connection if switch fails
+      setAddress(null);
+      setProvider(null);
+      setContract(null);
     }
   };
 
