@@ -55,7 +55,7 @@ const WinnerItem = ({
           <span className={`reward-type-badge ${getBadgeColor(winner.rewardType)}`}>
             {getRewardTypeIcon(winner.rewardType)} {winner.rewardTypeName}
           </span>
-          <div className="winner-amount">{winner.amount} tZETA</div>
+          <div className="winner-amount">{winner.amount} ZETA</div>
         </div>
       </div>
       

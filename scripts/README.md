@@ -45,7 +45,7 @@ This script supports the following options:
 Options:
   --address <addr>     Add a winner address
   --type <type>        Reward type (0: LuckyCCTX, 1: FinalityFlash, 2: GasGhost)
-  --amount <amount>    Amount in tZETA
+  --amount <amount>    Amount in ZETA
   --add                Add this entry to the list (use after specifying address, type, and amount)
   --clear              Clear the current list
   --default            Use default test data (this is the default behavior)
@@ -74,4 +74,4 @@ If you encounter any issues:
 
 1. **Contract Owner Mismatch**: Make sure your private key corresponds to the contract owner.
 2. **RPC Connection Issues**: You can set a custom RPC URL in the `.env` file.
-3. **Gas Errors**: Ensure your wallet has enough tZETA to pay for gas.
+3. **Gas Errors**: Ensure your wallet has enough ZETA to pay for gas.

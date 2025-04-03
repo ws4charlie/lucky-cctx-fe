@@ -2,7 +2,7 @@
 import { formatEther, parseEther, Contract } from 'ethers';
 
 // Contract address on ZetaChain Athens testnet
-const contractAddress = '0x651D44818E7B71B1C85d6dcC6AA61418E27c1a49';
+const contractAddress = '0xB9117f51d18723bB3e3c85BF6672eFA626089C92';
 
 // ABI for the LuckyCCTXs contract - directly from the ABI file
 const contractABI = [
@@ -383,10 +383,9 @@ const getRewardTypeName = (typeNumber) => {
   return types[typeNumber] || "Unknown";
 };
 
-// Get a contract instance with a signer (for sending transactions)
+// Get a contract instance with a provider
 export const getContractWithSigner = async (provider) => {
-  const signer = provider.getSigner();
-  return new Contract(contractAddress, contractABI, signer);
+  return new Contract(contractAddress, contractABI, provider);
 };
 
 // Get a contract instance without a signer (for read-only operations)
@@ -394,23 +393,35 @@ export const getContractReadOnly = (provider) => {
   return new Contract(contractAddress, contractABI, provider);
 };
 
-// Check if the user has unclaimed rewards
 export const checkUnclaimedRewards = async (contract, userAddress) => {
   try {
-    return await contract.hasUnclaimedRewards(userAddress);
+    // Try direct call first
+    const hasRewards = await contract.hasUnclaimedRewards(userAddress);
+    console.log('Has unclaimed rewards:', hasRewards);
+    return hasRewards;
   } catch (error) {
-    console.error("Error checking unclaimed rewards:", error);
+    console.error("Detailed error checking unclaimed rewards:", {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+      name: error.name
+    });
     return false;
   }
 };
 
-// Get the amount of unclaimed rewards
 export const getUnclaimedRewardsAmount = async (contract, userAddress) => {
   try {
     const amount = await contract.getUnclaimedRewards(userAddress);
-    return formatEther(amount); // Convert from wei to ZETA
+    console.log('Unclaimed rewards amount:', formatEther(amount));
+    return formatEther(amount);
   } catch (error) {
-    console.error("Error getting unclaimed rewards amount:", error);
+    console.error("Detailed error getting unclaimed rewards amount:", {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+      name: error.name
+    });
     return "0";
   }
 };
@@ -418,22 +429,18 @@ export const getUnclaimedRewardsAmount = async (contract, userAddress) => {
 // Claim rewards
 export const claimRewards = async (contract) => {
   try {
-    const tx = await contract.claimRewards();
-    return await tx.wait();
+    // Ensure we're using the contract with a signer
+    const signerContract = contract.connect(await contract.runner.provider.getSigner());
+    const tx = await signerContract.claimRewards();
+
+    // Wait for the transaction to be mined and get the receipt
+    const receipt = await tx.wait();
+    return {
+      transactionHash: tx.hash || receipt.hash || 'Unknown',
+      receipt: receipt
+    };
   } catch (error) {
     console.error("Error claiming rewards:", error);
-    throw error;
-  }
-};
-
-// Withdraw rewards to a specific address
-export const withdrawRewards = async (contract, amount, toAddress) => {
-  try {
-    const amountInWei = parseEther(amount);
-    const tx = await contract.withdraw(amountInWei, toAddress);
-    return await tx.wait();
-  } catch (error) {
-    console.error("Error withdrawing rewards:", error);
     throw error;
   }
 };

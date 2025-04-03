@@ -5,7 +5,9 @@ import { formatEther } from 'ethers';
 import WinnersList from './components/WinnersList';
 import { createReadOnlyProvider } from './utils/ethers-provider';
 import { 
-  connectWallet, 
+  connectWallet,
+  shortenHash,
+  getExplorerTxUrl,
   setupAccountChangeListener, 
   setupChainChangeListener,
   switchToZetaChain,
@@ -175,7 +177,23 @@ function App() {
       const tx = await claimRewards(contract);
       
       // Show success message
-      setSuccessMessage(`Successfully claimed ${rewardAmount} tZETA! Transaction hash: ${tx.transactionHash}`);
+      setSuccessMessage(
+        <div>
+          Successfully claimed {rewardAmount} ZETA! Transaction hash:{' '}
+          <a 
+            href={getExplorerTxUrl(tx.transactionHash)} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ 
+              color: 'blue', 
+              textDecoration: 'underline',
+              cursor: 'pointer'
+            }}
+          >
+            {shortenHash(tx.transactionHash)}
+          </a>
+        </div>
+      );
       
       // Reload winners to update the UI
       await loadWinners();
@@ -186,6 +204,14 @@ function App() {
         setBalance(formatEther(newBalance));
       }
     } catch (error) {
+      // Check if the user rejected the MetaMask transaction
+      const userRejected = error.code === 'ACTION_REJECTED';
+      if (userRejected) {
+        // Completely silent for user rejection
+        setIsClaimingReward(false);
+        return;
+      }
+
       console.error("Error claiming reward:", error);
       setErrorMessage(error.message || "Failed to claim reward");
     } finally {
@@ -330,11 +356,11 @@ function App() {
         <p>Lucky CCTX - Rewarding ZetaChain cross-chain transactions</p>
         <p className="contract-address">
           Contract: <a 
-            href="https://zetachain-testnet.blockscout.com/address/0x651D44818E7B71B1C85d6dcC6AA61418E27c1a49" 
+            href="https://zetachain-testnet.blockscout.com/address/0xB9117f51d18723bB3e3c85BF6672eFA626089C92" 
             target="_blank" 
             rel="noopener noreferrer"
           >
-            0x651D44818E7B71B1C85d6dcC6AA61418E27c1a49
+            0xB9117f51d18723bB3e3c85BF6672eFA626089C92
           </a>
         </p>
       </footer>

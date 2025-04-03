@@ -38,7 +38,7 @@ const Header = ({
               <>
                 {userBalance && (
                   <div className="balance-display">
-                    {parseFloat(userBalance).toFixed(4)} tZETA
+                    {parseFloat(userBalance).toFixed(4)} ZETA
                   </div>
                 )}
                 <a 

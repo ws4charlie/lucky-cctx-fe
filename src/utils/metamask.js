@@ -6,8 +6,8 @@ const ZETACHAIN_TESTNET_CONFIG = {
   chainId: '0x1B59', // 7001 in hex
   chainName: 'ZetaChain Athens Testnet',
   nativeCurrency: {
-    name: 'tZETA',
-    symbol: 'tZETA',
+    name: 'ZETA',
+    symbol: 'ZETA',
     decimals: 18,
   },
   rpcUrls: ['https://zetachain-athens-evm.blockpi.network/v1/rpc/public'],
@@ -134,4 +134,10 @@ export const getExplorerAddressUrl = (address) => {
 // Get explorer URL for a transaction
 export const getExplorerTxUrl = (txHash) => {
   return `${ZETACHAIN_TESTNET_CONFIG.blockExplorerUrls[0]}tx/${txHash}`;
+};
+
+// Get a shortened version of a hash
+export const shortenHash = (hash, start = 6, end = 4) => {
+  if (!hash) return '';
+  return `${hash.substring(0, start)}...${hash.substring(hash.length - end)}`;
 };

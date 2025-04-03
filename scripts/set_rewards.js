@@ -8,7 +8,7 @@ const { parseEther, formatEther, Contract } = require("ethers");
 const RPC_URL = process.env.RPC_URL;
 
 // Contract address on ZetaChain Athens testnet
-const CONTRACT_ADDRESS = '0x651D44818E7B71B1C85d6dcC6AA61418E27c1a49';
+const CONTRACT_ADDRESS = '0xB9117f51d18723bB3e3c85BF6672eFA626089C92';
 
 const provider = new JsonRpcProvider(RPC_URL);
 
@@ -95,7 +95,7 @@ async function main() {
       const rewardTypeName = Object.keys(RewardType).find(key => RewardType[key] === testData.rewardTypes[i]);
       console.log(`Winner: ${testData.winners[i]}`);
       console.log(`Reward Type: ${rewardTypeName} (${testData.rewardTypes[i]})`);
-      console.log(`Amount: ${formatEther(testData.amounts[i])} tZETA`);
+      console.log(`Amount: ${formatEther(testData.amounts[i])} ZETA`);
       console.log("----------------------------------------");
     }
     
@@ -146,7 +146,7 @@ function generateTestRewardsData() {
     RewardType.LuckyCCTX
   ];
   
-  // Generate amounts (between 0.01 and 0.1 tZETA)
+  // Generate amounts (between 0.01 and 0.1 ZETA)
   const amounts = testAddresses.map(() => {
     const amount = 0.001 + Math.random() * 0.009; // Random amount between 0.01 and 0.1
     return parseEther(amount.toFixed(6)); // Convert to wei with 6 decimal precision
