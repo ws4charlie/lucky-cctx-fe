@@ -1,6 +1,6 @@
 // src/components/WinnerItem.js
 import React from 'react';
-import { formatAddress, getExplorerAddressUrl } from '../utils/metamask';
+import { formatAddress, getExplorerAddressUrl, getZetaScanTxUrl } from '../utils/metamask';
 
 // Get reward type icon
 export const getRewardTypeIcon = (rewardType) => {
@@ -14,6 +14,8 @@ export const getRewardTypeIcon = (rewardType) => {
   // 🍭
   // 🍬
   // 🫔
+  // 🐢
+  // ⛽️
   switch (parseInt(rewardType)) {
     case 0: // Lucky CCTX
       return '🧇'; // Lucky clover
@@ -21,8 +23,10 @@ export const getRewardTypeIcon = (rewardType) => {
       return '🍪'; // Lightning bolt
     case 2: // Gas Ghost
       return '🍩'; // Ghost
+    case 3: // Patience Pioneer
+      return '🐢';
     default:
-      return '🥮';
+      return '🥇';
   }
 };
 
@@ -41,6 +45,8 @@ const WinnerItem = ({
         return 'bg-yellow-100 text-yellow-800';
       case 2: // Gas Ghost
         return 'bg-green-100 text-green-800';
+      case 3: // Patience Pioneer
+        return 'bg-purple-100 text-purple-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -67,23 +73,37 @@ const WinnerItem = ({
           </span>
           <div className="winner-amount">{winner.amount} ZETA</div>
         </div>
+        
+        {/* Transaction Link - Now last */}
+        {winner.cctxIndex && (
+          <div className="transaction-link-container">
+            <a 
+              href={getZetaScanTxUrl(winner.cctxIndex)} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="transaction-link"
+            >
+              View Transaction
+            </a>
+          </div>
+        )}
       </div>
       
-      {isCurrentUser && !winner.claimed && (
-        <button 
-          className="claim-button" 
-          onClick={() => onClaimReward(winner)}
-          disabled={claimingInProgress}
-        >
-          {claimingInProgress ? 'Claiming...' : 'Claim Reward'}
-        </button>
-      )}
-      
-      {winner.claimed && (
-        <div className="claimed-badge">
-          ✓ Claimed
-        </div>
-      )}
+        {isCurrentUser && !winner.claimed && (
+          <button 
+            className="claim-button" 
+            onClick={() => onClaimReward(winner)}
+            disabled={claimingInProgress}
+          >
+            {claimingInProgress ? 'Claiming...' : 'Claim Reward'}
+          </button>
+        )}
+        
+        {winner.claimed && (
+          <div className="claimed-badge">
+            ✓ Claimed
+          </div>
+        )}
     </div>
   );
 };

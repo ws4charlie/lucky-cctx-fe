@@ -356,11 +356,11 @@ function App() {
         <p>Fortune Cookie - Rewarding ZetaChain cross-chain transactions</p>
         <p className="contract-address">
           Contract: <a 
-            href="https://zetachain-testnet.blockscout.com/address/0xB9117f51d18723bB3e3c85BF6672eFA626089C92" 
+            href="https://zetachain-testnet.blockscout.com/address/0x973499f438A924F38765539eB9d570543b5b9697" 
             target="_blank" 
             rel="noopener noreferrer"
           >
-            0xB9117f51d18723bB3e3c85BF6672eFA626089C92
+            0x973499f438A924F38765539eB9d570543b5b9697
           </a>
         </p>
       </footer>

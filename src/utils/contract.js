@@ -2,7 +2,7 @@
 import { formatEther, parseEther, Contract } from 'ethers';
 
 // Contract address on ZetaChain Athens testnet
-const contractAddress = '0xB9117f51d18723bB3e3c85BF6672eFA626089C92';
+const contractAddress = '0x973499f438A924F38765539eB9d570543b5b9697';
 
 // ABI for the LuckyCCTXs contract - directly from the ABI file
 const contractABI = [
@@ -108,6 +108,12 @@ const contractABI = [
         "internalType": "enum LuckyCCTXs.RewardType[]",
         "name": "rewardTypes",
         "type": "uint8[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "string[]",
+        "name": "cctxIndices",
+        "type": "string[]"
       }
     ],
     "name": "RewardsSet",
@@ -188,6 +194,11 @@ const contractABI = [
             "type": "uint256"
           },
           {
+            "internalType": "string",
+            "name": "cctxIndex",
+            "type": "string"
+          },
+          {
             "internalType": "bool",
             "name": "claimed",
             "type": "bool"
@@ -215,6 +226,19 @@ const contractABI = [
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastRewardsBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -269,6 +293,11 @@ const contractABI = [
         "internalType": "uint256[]",
         "name": "amounts",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "cctxIndices",
+        "type": "string[]"
       }
     ],
     "name": "setRewards",
@@ -341,6 +370,11 @@ const contractABI = [
         "type": "uint256"
       },
       {
+        "internalType": "string",
+        "name": "cctxIndex",
+        "type": "string"
+      },
+      {
         "internalType": "bool",
         "name": "claimed",
         "type": "bool"
@@ -371,7 +405,7 @@ const contractABI = [
     "stateMutability": "payable",
     "type": "receive"
   }
-];
+ ];
 
 // Helper function to convert reward type number to a readable name
 const getRewardTypeName = (typeNumber) => {
@@ -379,6 +413,7 @@ const getRewardTypeName = (typeNumber) => {
     0: "Lucky CCTX",       // lucky CCTX
     1: "Finality Flash",   // fastest finality
     2: "Gas Ghost",        // lowest gas
+    3: "Patience Pioneer"  // slowest finality
   };
   return types[typeNumber] || "Unknown";
 };
@@ -483,7 +518,8 @@ export const fetchCurrentWinners = async (provider) => {
       const winners = latestEvent.args[0];    // First argument is winners array
       const amounts = latestEvent.args[1];    // Second argument is amounts array
       const rewardTypes = latestEvent.args[2]; // Third argument is rewardTypes array
-      
+      const cctxIndex = latestEvent.args[3]; // Fourth argument is cctxIndex array
+
       console.log(`Found ${winners.length} winners in the event`);
       
       // Create winners list with details
@@ -514,6 +550,7 @@ export const fetchCurrentWinners = async (provider) => {
           amount: formatEther(amounts[i]),
           rewardType: rewardTypes[i],
           rewardTypeName: getRewardTypeName(rewardTypes[i]),
+          cctxIndex: cctxIndex[i],
           claimed: rewardsClaimed
         });
       }
@@ -638,6 +675,7 @@ export const getUserRewardsHistory = async (contract, userAddress) => {
       rewardType: reward.rewardType,
       rewardTypeName: getRewardTypeName(reward.rewardType),
       amount: formatEther(reward.amount),
+      cctxIndex: reward.cctxIndex,
       claimed: reward.claimed
     }));
   } catch (error) {

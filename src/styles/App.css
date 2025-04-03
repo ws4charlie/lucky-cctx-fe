@@ -446,6 +446,18 @@
     font-weight: 600;
     font-size: 1rem;
   }
+
+  .transaction-link {
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: inline-block;
+  }
+  
+  .transaction-link:hover {
+    color: var(--primary-dark);
+  }
   
   .claimed-badge {
     background-color: var(--success-color);

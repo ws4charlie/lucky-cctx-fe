@@ -12,6 +12,7 @@ const ZETACHAIN_TESTNET_CONFIG = {
   },
   rpcUrls: ['https://zetachain-athens-evm.blockpi.network/v1/rpc/public'],
   blockExplorerUrls: ['https://zetachain-testnet.blockscout.com/'],
+  zetaScanUrl: 'https://athens.explorer.zetachain.com/cc/',
 };
 
 export const connectWallet = async () => {
@@ -134,6 +135,11 @@ export const getExplorerAddressUrl = (address) => {
 // Get explorer URL for a transaction
 export const getExplorerTxUrl = (txHash) => {
   return `${ZETACHAIN_TESTNET_CONFIG.blockExplorerUrls[0]}tx/${txHash}`;
+};
+
+// Get ZetaScan URL for a transaction
+export const getZetaScanTxUrl = (txHash) => {
+  return `${ZETACHAIN_TESTNET_CONFIG.zetaScanUrl}tx/${txHash}`;
 };
 
 // Get a shortened version of a hash

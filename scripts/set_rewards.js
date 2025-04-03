@@ -8,7 +8,7 @@ const { parseEther, formatEther, Contract } = require("ethers");
 const RPC_URL = process.env.RPC_URL;
 
 // Contract address on ZetaChain Athens testnet
-const CONTRACT_ADDRESS = '0xB9117f51d18723bB3e3c85BF6672eFA626089C92';
+const CONTRACT_ADDRESS = '0x973499f438A924F38765539eB9d570543b5b9697';
 
 const provider = new JsonRpcProvider(RPC_URL);
 
@@ -30,6 +30,11 @@ const CONTRACT_ABI = [
         "internalType": "uint256[]",
         "name": "amounts",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "cctxIndices",
+        "type": "string[]"
       }
     ],
     "name": "setRewards",
@@ -56,7 +61,8 @@ const CONTRACT_ABI = [
 const RewardType = {
   LuckyCCTX: 0,
   FinalityFlash: 1,
-  GasGhost: 2
+  GasGhost: 2,
+  PatiencePioneer: 3
 };
 
 async function main() {
@@ -70,8 +76,6 @@ async function main() {
     console.log("Setting up provider and wallet...");
     
     // Setup provider and wallet
-    //const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-    const blockNumber = await provider.getBlockNumber();
     const wallet = new ethers.Wallet(privateKey, provider);
     const contractWithSigner = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, wallet);
     
@@ -96,15 +100,17 @@ async function main() {
       console.log(`Winner: ${testData.winners[i]}`);
       console.log(`Reward Type: ${rewardTypeName} (${testData.rewardTypes[i]})`);
       console.log(`Amount: ${formatEther(testData.amounts[i])} ZETA`);
+      console.log(`CCTX: ${testData.cctxIndices[i]}`);
       console.log("----------------------------------------");
     }
     
-    // Call setRewards method
+    // Call setRewards method with new parameter
     console.log("\nSending transaction...");
     const tx = await contractWithSigner.setRewards(
       testData.rewardTypes,
       testData.winners,
-      testData.amounts
+      testData.amounts,
+      testData.cctxIndices
     );
     
     console.log(`Transaction sent: ${tx.hash}`);
@@ -130,7 +136,7 @@ async function main() {
 function generateTestRewardsData() {
   // Generate some random addresses for testing
   const testAddresses = [
-    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", // Replace with your test addresses
+    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
     "0xeB28B665C1aDBA260a5465a450398c1EaA052F08",
     "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
     "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
@@ -143,7 +149,7 @@ function generateTestRewardsData() {
     RewardType.LuckyCCTX,
     RewardType.FinalityFlash,
     RewardType.GasGhost,
-    RewardType.LuckyCCTX
+    RewardType.PatiencePioneer
   ];
   
   // Generate amounts (between 0.01 and 0.1 ZETA)
@@ -152,10 +158,20 @@ function generateTestRewardsData() {
     return parseEther(amount.toFixed(6)); // Convert to wei with 6 decimal precision
   });
   
+  // Generate CCTX indices in the correct format
+  const cctxIndices = [
+    "0x83bcb2bc85f8d577ef7e27d1a9c47cd6b200954c0f4b02be5897bb7446942f63",
+    "0x6c66f1c573c5e97e85de7b557df9026ce68621d4a0b45de8a9e4dafe435f2e8f",
+    "0x4262f634530d4102ed15f13b8a190cc6cde1375b8f264ba8fd52d04e72d56cb5",
+    "0xe887411ed653a10d384564d68e52503f3890753acd2abfa5d13dd244dd735949",
+    "0x7f2101b8dbb5025746005ae7a179adaeaf7c666aa12cec7ebbcb283a3dfa1813"
+  ];
+  
   return {
     rewardTypes,
     winners: testAddresses,
-    amounts
+    amounts,
+    cctxIndices
   };
 }
 
@@ -166,3 +182,4 @@ main()
     console.error(error);
     process.exit(1);
   });
+  
