@@ -63,6 +63,11 @@ const Header = ({
             onClick={onConnect} 
             disabled={isConnecting}
           >
+            <img 
+              src="/assets/images/metamask.png" 
+              alt="MetaMask" 
+              className="metamask-icon"
+            />
             {isConnecting ? 'Connecting...' : 'Connect MetaMask'}
           </button>
         )}

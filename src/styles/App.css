@@ -84,6 +84,18 @@
     align-items: center;
     gap: 0.75rem;
   }
+
+  .connect-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .metamask-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
   
   .balance-display {
     background-color: #f0fdf4;
