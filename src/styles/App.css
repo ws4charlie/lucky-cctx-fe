@@ -14,7 +14,7 @@
     --warning-color: #f59e0b;
     
     /* Reward Type Colors */
-    --lucky-color: #8b5cf6;    /* Purple for Lucky CCTX */
+    --lucky-color: #8b5cf6;    /* Purple for Fortune Cookie */
     --finality-color: #f59e0b; /* Yellow for Finality Flash */
     --gas-color: #10b981;      /* Green for Gas Ghost */
   }
@@ -56,8 +56,8 @@
   }
   
   .zeta-logo {
-    height: 40px;
-    width: 40px;
+    height: 80px;
+    width: 80px;
     object-fit: contain;
   }
   
@@ -230,7 +230,13 @@
   }
   
   .main-title {
-    font-size: 1.875rem;
+    font-size: 1.875rem;body {
+      background-color: #FFF5E6; /* Soft warm cream color */
+      background-image: 
+        linear-gradient(rgba(255,240,210,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,240,210,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
     margin-bottom: 1.5rem;
     text-align: center;
     color: var(--text-color);
@@ -364,6 +370,14 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
   
+  .winner-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+      8px 8px 15px rgba(0, 0, 0, 0.08), 
+      -8px -8px 15px rgba(255, 255, 255, 0.8);
+    border-color: rgba(99, 102, 241, 0.2);
+  }
+  
   .winner-item.current-user {
     border-color: var(--primary-color);
     background-color: rgba(99, 102, 241, 0.05);
@@ -412,7 +426,7 @@
     gap: 0.25rem;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    font-size: 0.75rem;
+    font-size: 1.2rem;
     font-weight: 500;
   }
   
@@ -427,9 +441,14 @@
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.25rem;
+    width: auto;  /* Allow width to adjust to content */
+    max-width: 80px;  /* Limit maximum width */
+    white-space: nowrap;  /* Prevent text wrapping */
+    overflow: hidden;  /* Hide overflow */
+    text-overflow: ellipsis;  /* Add ellipsis if too long */
   }
   
   /* Loading states */

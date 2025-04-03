@@ -2,6 +2,30 @@
 import React from 'react';
 import { formatAddress, getExplorerAddressUrl } from '../utils/metamask';
 
+// Get reward type icon
+export const getRewardTypeIcon = (rewardType) => {
+  // we have many icons to choose from:
+  // 🍀 ⚡ 👻
+  // 🍪
+  // 🍩
+  // 🥮
+  // 🍰
+  // 🍫
+  // 🍭
+  // 🍬
+  // 🫔
+  switch (parseInt(rewardType)) {
+    case 0: // Lucky CCTX
+      return '🧇'; // Lucky clover
+    case 1: // Finality Flash
+      return '🍪'; // Lightning bolt
+    case 2: // Gas Ghost
+      return '🍩'; // Ghost
+    default:
+      return '🥮';
+  }
+};
+
 const WinnerItem = ({ 
   winner, 
   isCurrentUser, 
@@ -19,20 +43,6 @@ const WinnerItem = ({
         return 'bg-green-100 text-green-800';
       default:
         return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  // Get reward type icon
-  const getRewardTypeIcon = (rewardType) => {
-    switch (parseInt(rewardType)) {
-      case 0: // Lucky CCTX
-        return '🍀'; // Lucky clover
-      case 1: // Finality Flash
-        return '⚡'; // Lightning bolt
-      case 2: // Gas Ghost
-        return '👻'; // Ghost
-      default:
-        return '🏆';
     }
   };
 

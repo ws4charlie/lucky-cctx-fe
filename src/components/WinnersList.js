@@ -1,6 +1,6 @@
 // src/components/WinnersList.js
 import React, { useState } from 'react';
-import WinnerItem from './WinnerItem';
+import WinnerItem, { getRewardTypeIcon } from './WinnerItem';
 
 const WinnersList = ({ 
   winners, 
@@ -103,19 +103,5 @@ const WinnersList = ({
     </div>
   );
 };
-
-// Helper function to get icon for reward type
-function getRewardTypeIcon(rewardType) {
-  switch (parseInt(rewardType)) {
-    case 0: // Lucky CCTX
-      return '🍀';
-    case 1: // Finality Flash
-      return '⚡';
-    case 2: // Gas Ghost
-      return '👻';
-    default:
-      return '🏆';
-  }
-}
 
 export default WinnersList;

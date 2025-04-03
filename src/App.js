@@ -179,7 +179,7 @@ function App() {
       // Show success message
       setSuccessMessage(
         <div>
-          Successfully claimed {rewardAmount} ZETA! Transaction hash:{' '}
+          Successfully claimed {rewardAmount} ZETA! Transaction:{' '}
           <a 
             href={getExplorerTxUrl(tx.transactionHash)} 
             target="_blank" 
@@ -307,7 +307,7 @@ function App() {
       />
       
       <main className="main-content">
-        <h1 className="main-title">Today's Lucky CCTX Winners</h1>
+        <h1 className="main-title">Today's Fortune Cookie Winners</h1>
         
         {timeUntilNext !== null && timeUntilNext > 0 && (
           <div className="countdown-timer">
@@ -353,7 +353,7 @@ function App() {
       </main>
       
       <footer className="app-footer">
-        <p>Lucky CCTX - Rewarding ZetaChain cross-chain transactions</p>
+        <p>Fortune Cookie - Rewarding ZetaChain cross-chain transactions</p>
         <p className="contract-address">
           Contract: <a 
             href="https://zetachain-testnet.blockscout.com/address/0xB9117f51d18723bB3e3c85BF6672eFA626089C92" 

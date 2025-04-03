@@ -19,7 +19,7 @@ const Header = ({
       <div className="logo-container">
         <img src={zetaChainLogo} alt="ZetaChain Logo" className="zeta-logo" />
         <div className="logo-text">
-          <h1>Lucky CCTX</h1>
+          <h1>Fortune Cookie</h1>
           <p>Daily winners of ZetaChain cross-chain transactions</p>
         </div>
       </div>
