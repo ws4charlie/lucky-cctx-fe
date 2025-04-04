@@ -212,7 +212,7 @@ function generateTestRewardsData() {
   // Generate some random addresses for testing
   const testAddresses = [
     "0xEbA816378707e47f18320e672603c7790058a936",
-    "0xeB28B665C1aDBA260a5465a450398c1EaA052F08",
+    "0xeB28B665C1aDBA260a5465a450398c1EaA052F08", // your own address for test
     "0xcdB2b5041eD88E7AFcD6383992E38AB148B4831c",
     "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"
   ];
@@ -225,13 +225,17 @@ function generateTestRewardsData() {
     RewardType.PatiencePioneer
   ];
   
-  // Generate amounts (between 0.001 and 0.01 ZETA)
-  const amounts = testAddresses.map(() => {
-    const amount = 0.001 + Math.random() * 0.009; // Random amount between 0.001 and 0.01
-    return parseEther(amount.toFixed(6)); // Convert to wei with 6 decimal precision
+  // Generate amounts - fixed tiny amount for all addresses except your own
+  const amounts = testAddresses.map((address) => {
+    // For your address, use a larger amount so you can claim it back
+    if (address.toLowerCase() === "0xeB28B665C1aDBA260a5465a450398c1EaA052F08".toLowerCase()) {
+      return parseEther("0.000002"); // 2x for your address
+    }
+    // For all other addresses, use the minimal amount
+    return parseEther("0.000001");
   });
   
-  // Generate CCTX indices in the correct format
+  // The rest of your function remains the same
   const cctxIndices = [
     "0x83bcb2bc85f8d577ef7e27d1a9c47cd6b200954c0f4b02be5897bb7446942f63",
     "0x6c66f1c573c5e97e85de7b557df9026ce68621d4a0b45de8a9e4dafe435f2e8f",
@@ -248,7 +252,6 @@ function generateTestRewardsData() {
 
   // Generate random finality times (10 seconds to 5 minutes)
   const finalityTimes = testAddresses.map(() => {
-    // Finality times biased by reward type
     const baseTime = 10; // Base time in seconds
     const randomTime = Math.floor(Math.random() * 290) + baseTime; // Random time between 10 and 300 seconds
     return randomTime;
