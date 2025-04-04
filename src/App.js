@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import { formatEther } from 'ethers';
 import WinnersList from './components/WinnersList';
@@ -17,11 +17,9 @@ import {
   getContractWithSigner, 
   getContractReadOnly,
   fetchWinners,
-  fetchCurrentWinners,
   claimRewards,
   checkUnclaimedRewards,
   getUnclaimedRewardsAmount,
-  getTimeUntilNextRewards
 } from './utils/contract';
 import './styles/App.css';
 
@@ -136,8 +134,8 @@ function App() {
           const timestamp = await contract.lastRewardsTimestamp();
           setLastUpdateTime(Number(timestamp));
           
-          const timeRemaining = await getTimeUntilNextRewards(contract);
-          setTimeUntilNext(timeRemaining);
+          const timeRemaining = await contract.timeUntilNextRewards();
+          setTimeUntilNext(Number(timeRemaining));
         } catch (contractError) {
           console.error("Error reading from contract:", contractError);
         }
@@ -265,11 +263,11 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Refresh winners list periodically (every 2 minutes)
+  // Refresh winners list periodically (every 5 minutes)
   useEffect(() => {
     const interval = setInterval(() => {
       loadWinners();
-    }, 120000);
+    }, 300000);
     
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps

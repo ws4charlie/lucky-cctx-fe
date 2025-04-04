@@ -75,7 +75,7 @@ const WinnersList = ({
     );
   }
   
-  if (allWinners.length === 0) {
+  if (allWinners.length === 0 && !loading) {
     return (
       <div className="no-winners">
         <div className="empty-state-icon">🏆</div>

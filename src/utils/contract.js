@@ -592,7 +592,7 @@ export const fetchWinners = async (provider) => {
     return processedEvents;
   } catch (error) {
     console.error("Error fetching winners:", error);
-    return { today: [], yesterday: [], twoDaysAgo: [] };
+    return { today: [], yesterday: [], twoDaysAgo: [], threeDaysAgo: [] };
   }
 };
 
@@ -797,16 +797,5 @@ export const getUserRewardsHistory = async (contract, userAddress) => {
   } catch (error) {
     console.error("Error getting user rewards history:", error);
     return [];
-  }
-};
-
-// Get time until next rewards update
-export const getTimeUntilNextRewards = async (contract) => {
-  try {
-    const timeRemaining = await contract.timeUntilNextRewards();
-    return timeRemaining.toNumber();
-  } catch (error) {
-    console.error("Error getting time until next rewards:", error);
-    return 0;
   }
 };
