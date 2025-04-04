@@ -1,19 +1,19 @@
 // src/utils/ethers-provider.js
 import { ethers } from 'ethers';
 
-export const ZETACHAIN_CHAIN_ID = 7001n;
-export const ZETACHAIN_CHAIN_ID_DEC = 7001;
-export const ZETACHAIN_CHAIN_ID_HEX = '0x1B59';
-export const CONTRACT_ADDRESS = '0xd54b34AFCf923Ada37c1fCb7C662E637254351a6';
+export const ZETACHAIN_CHAIN_ID = 7000n;
+export const ZETACHAIN_CHAIN_ID_DEC = 7000;
+export const ZETACHAIN_CHAIN_ID_HEX = '0x1B58'; // 7000 in hex
+export const CONTRACT_ADDRESS = '0xf7DFC30F475f33FDE90867fF4EDEAf03e3154447';
 
 // ZetaChain network configuration
 export const ZETACHAIN_CONFIG = {
   chainId: ZETACHAIN_CHAIN_ID_DEC,
-  chainIdHex: ZETACHAIN_CHAIN_ID_HEX, // 7001 in hex
-  name: 'ZetaChain Testnet',
-  rpcUrl: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
-  blockExplorer: 'https://zetachain-testnet.blockscout.com/',
-  zetaScanUrl: 'https://athens.explorer.zetachain.com/cc/'
+  chainIdHex: ZETACHAIN_CHAIN_ID_HEX,
+  name: 'ZetaChain Mainnet',
+  rpcUrl: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
+  blockExplorer: 'https://zetachain.blockscout.com/',
+  zetaScanUrl: 'https://explorer.zetachain.com/cc/'
 };
 
 // Create a read-only provider for ZetaChain

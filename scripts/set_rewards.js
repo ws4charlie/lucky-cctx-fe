@@ -7,8 +7,8 @@ const { parseEther, formatEther, Contract } = require("ethers");
 // ZetaChain Athens testnet RPC URL
 const RPC_URL = process.env.RPC_URL;
 
-// Contract address on ZetaChain Athens testnet
-const CONTRACT_ADDRESS = '0xd54b34AFCf923Ada37c1fCb7C662E637254351a6';
+// Contract address on ZetaChain
+const CONTRACT_ADDRESS = '0xf7DFC30F475f33FDE90867fF4EDEAf03e3154447';
 
 const provider = new JsonRpcProvider(RPC_URL);
 
@@ -93,7 +93,7 @@ const SUPPORTED_CHAINS = {
   },
   137: {
     name: 'Polygon',
-    shortName: 'MATIC',
+    shortName: 'Polygon',
   },
   8453: {
     name: 'Base',
@@ -103,28 +103,6 @@ const SUPPORTED_CHAINS = {
     name: 'Bitcoin',
     shortName: 'BTC',
   },
-  
-  // Testnet chains
-  11155111: {
-    name: 'Ethereum Sepolia',
-    shortName: 'SEP',
-  },
-  97: {
-    name: 'BNB Testnet',
-    shortName: 'tBNB',
-  },
-  80002: {
-    name: 'Polygon Amoy',
-    shortName: 'AMOY',
-  },
-  84532: {
-    name: 'Base Sepolia',
-    shortName: 'bSEP',
-  },
-  18334: {
-    name: 'Bitcoin Testnet4',
-    shortName: 'tBTC',
-  }
 };
 
 // Get an array of supported chain IDs for random selection
@@ -237,10 +215,10 @@ function generateTestRewardsData() {
   
   // The rest of your function remains the same
   const cctxIndices = [
-    "0x83bcb2bc85f8d577ef7e27d1a9c47cd6b200954c0f4b02be5897bb7446942f63",
-    "0x6c66f1c573c5e97e85de7b557df9026ce68621d4a0b45de8a9e4dafe435f2e8f",
-    "0x4262f634530d4102ed15f13b8a190cc6cde1375b8f264ba8fd52d04e72d56cb5",
-    "0x7f2101b8dbb5025746005ae7a179adaeaf7c666aa12cec7ebbcb283a3dfa1813"
+    "0x7cfa622b9569e380a648fb853205fc4c72802c9f2962dee662124fe5f1c74127",
+    "0x60e9b0734279312be76d11d6dee7abb390ca8e3df3e2bff15a7c7fbd9872c458",
+    "0x9f54fc6775cd639032f7f304e7398bb4a8be0f2761b05820db3a5fca5b0763ea",
+    "0x0ae1e196341eca049fadb46d93f179fdb5541455f239b6bdb40c6772670234c6"
   ];
 
   // Generate random chain IDs from supported chains
