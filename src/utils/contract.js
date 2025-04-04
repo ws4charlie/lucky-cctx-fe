@@ -2,7 +2,7 @@
 import { formatEther, parseEther, Contract } from 'ethers';
 
 // Contract address on ZetaChain Athens testnet
-const contractAddress = '0x973499f438A924F38765539eB9d570543b5b9697';
+const contractAddress = '0x0bFdA3991d9194075cd5B0c1a7dE58a862b1D247';
 
 // ABI for the LuckyCCTXs contract - directly from the ABI file
 const contractABI = [
@@ -199,6 +199,11 @@ const contractABI = [
             "type": "string"
           },
           {
+            "internalType": "uint256",
+            "name": "zetaBlock",
+            "type": "uint256"
+          },
+          {
             "internalType": "bool",
             "name": "claimed",
             "type": "bool"
@@ -375,6 +380,11 @@ const contractABI = [
         "type": "string"
       },
       {
+        "internalType": "uint256",
+        "name": "zetaBlock",
+        "type": "uint256"
+      },
+      {
         "internalType": "bool",
         "name": "claimed",
         "type": "bool"
@@ -480,6 +490,112 @@ export const claimRewards = async (contract) => {
   }
 };
 
+// src/utils/contract.js - Updated fetchWinners function
+
+// Fetch winners from multiple days
+export const fetchWinners = async (provider) => {
+  try {
+    console.log("Fetching winners from multiple days...");
+    const contract = new Contract(contractAddress, contractABI, provider);
+    
+    // Get the latest block number
+    const latestBlock = await provider.getBlockNumber();
+    console.log(`Latest block: ${latestBlock}`);
+    
+    // Look back more blocks to find multiple days of events
+    const fromBlock = Math.max(0, latestBlock - 1000); // Increased block range
+    console.log(`Searching from block ${fromBlock} to ${latestBlock}`);
+    
+    // Create a filter for RewardsSet events
+    const filter = contract.filters.RewardsSet();
+    
+    const events = await contract.queryFilter(filter, fromBlock, latestBlock);
+    console.log(`Found ${events.length} RewardsSet events`);  
+    
+    // If no events, return empty array
+    if (events.length === 0) {
+      console.log("No RewardsSet events found");
+      return { today: [], yesterday: [], twoDaysAgo: [] };
+    }
+    
+    // Sort events by block number in descending order (newest first)
+    const sortedEvents = [...events].sort((a, b) => 
+      b.blockNumber - a.blockNumber
+    );
+    
+    // Process up to 3 most recent events (today, yesterday, day before)
+    const processedEvents = {};
+    
+    // Labels for each day
+    const labels = ['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo'];
+    
+    // Process each event (up to 3)
+    for (let i = 0; i < Math.min(sortedEvents.length, 4); i++) {
+      const event = sortedEvents[i];
+      const day = labels[i];
+      
+      // Get the block timestamp to display the actual date
+      const block = await provider.getBlock(event.blockNumber);
+      const timestamp = block ? block.timestamp : null;
+      
+      // In v6, args is accessed a bit differently
+      const winners = event.args[0];    // First argument is winners array
+      const amounts = event.args[1];    // Second argument is amounts array
+      const rewardTypes = event.args[2]; // Third argument is rewardTypes array
+      const cctxIndex = event.args[3]; // Fourth argument is cctxIndex array
+      
+      console.log(`Found ${winners.length} winners for ${day} in event at block ${event.blockNumber}`);
+      
+      // Create winners list with details
+      const winnersList = [];
+      
+      for (let j = 0; j < winners.length; j++) {
+        // Check if the winner has already claimed their reward
+        let rewardsClaimed = false;
+        try {
+          const rewards = await contract.getUserRewardsHistory(winners[j]);
+          
+          // Find the most recent reward for this address that matches the reward from the event
+          for (let k = rewards.length - 1; k >= 0; k--) {
+            if (Number(rewards[k].zetaBlock) === event.blockNumber) {
+              rewardsClaimed = rewards[k].claimed;
+              break;
+            }
+          }
+        } catch (error) {
+          console.error(`Error checking if rewards claimed for ${winners[j]}:`, error);
+        }
+        
+        winnersList.push({
+          address: winners[j],
+          amount: formatEther(amounts[j]),
+          rewardType: rewardTypes[j],
+          rewardTypeName: getRewardTypeName(rewardTypes[j]),
+          cctxIndex: cctxIndex[j],
+          claimed: rewardsClaimed,
+          blockNumber: event.blockNumber,
+          timestamp: timestamp
+        });
+      }
+      
+      processedEvents[day] = winnersList;
+    }
+    
+    // Fill in any missing days with empty arrays
+    labels.forEach(label => {
+      if (!processedEvents[label]) {
+        processedEvents[label] = [];
+      }
+    });
+    
+    console.log("Prepared winners data:", processedEvents);
+    return processedEvents;
+  } catch (error) {
+    console.error("Error fetching winners:", error);
+    return { today: [], yesterday: [], twoDaysAgo: [] };
+  }
+};
+
 // Get all current winners by filtering RewardsSet events
 export const fetchCurrentWinners = async (provider) => {
   try {
@@ -535,8 +651,7 @@ export const fetchCurrentWinners = async (provider) => {
           
           // Find the most recent reward for this address that matches the reward from the event
           for (let j = rewards.length - 1; j >= 0; j--) {
-            if (rewards[j].amount.toString() === amounts[i].toString() && 
-                rewards[j].rewardType === rewardTypes[i]) {
+            if (Number(rewards[j].zetaBlock) === latestEvent.blockNumber) {
               rewardsClaimed = rewards[j].claimed;
               break;
             }
@@ -676,6 +791,7 @@ export const getUserRewardsHistory = async (contract, userAddress) => {
       rewardTypeName: getRewardTypeName(reward.rewardType),
       amount: formatEther(reward.amount),
       cctxIndex: reward.cctxIndex,
+      zetaBlock: reward.zetaBlock,
       claimed: reward.claimed
     }));
   } catch (error) {

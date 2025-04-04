@@ -318,14 +318,68 @@
     cursor: pointer;
     color: inherit;
   }
+
+  /* Winners by day styles */
+  .winners-by-day {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .day-winners-section {
+    background-color: var(--card-background);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .day-heading {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+  }
+  
+  /* Today's winners should have a special highlight */
+  .day-winners-section:first-child {
+    background-color: rgba(99, 102, 241, 0.05);
+    border: 1px solid rgba(99, 102, 241, 0.1);
+  }
+  
+  .day-winners-section:first-child .day-heading {
+    color: var(--primary-color);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .day-winners-section {
+      padding: 1rem;
+    }
+    
+    .day-heading {
+      font-size: 1.125rem;
+    }
+  }
+  
+  /* Optional: Add a smooth transition between days */
+  .day-winners-section {
+    transition: all 0.3s ease;
+  }
   
   /* Winners list styles */
   .winners-container {
-    margin-top: 2rem;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .winners-tabs {
     background-color: var(--card-background);
+    padding: 1rem;
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
   
   .last-update-time {

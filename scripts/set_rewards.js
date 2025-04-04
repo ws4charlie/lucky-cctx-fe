@@ -8,7 +8,7 @@ const { parseEther, formatEther, Contract } = require("ethers");
 const RPC_URL = process.env.RPC_URL;
 
 // Contract address on ZetaChain Athens testnet
-const CONTRACT_ADDRESS = '0x973499f438A924F38765539eB9d570543b5b9697';
+const CONTRACT_ADDRESS = '0x0bFdA3991d9194075cd5B0c1a7dE58a862b1D247';
 
 const provider = new JsonRpcProvider(RPC_URL);
 
@@ -182,4 +182,3 @@ main()
     console.error(error);
     process.exit(1);
   });
-  

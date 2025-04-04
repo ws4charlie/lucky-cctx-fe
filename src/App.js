@@ -16,6 +16,7 @@ import {
 import {
   getContractWithSigner, 
   getContractReadOnly,
+  fetchWinners,
   fetchCurrentWinners,
   claimRewards,
   checkUnclaimedRewards,
@@ -126,18 +127,17 @@ function App() {
         throw new Error("Unable to create provider for fetching winners");
       }
   
-      const winnersData = await fetchCurrentWinners(currentProvider);
+      const winnersData = await fetchWinners(currentProvider);
       setWinners(winnersData);
       
       // Keep existing contract-related logic if contract exists
       if (contract) {
         try {
-          // Uncomment and implement these when ready
-          // const timestamp = await contract.lastRewardsTimestamp();
-          // setLastUpdateTime(Number(timestamp));
+          const timestamp = await contract.lastRewardsTimestamp();
+          setLastUpdateTime(Number(timestamp));
           
-          // const timeRemaining = await getTimeUntilNextRewards(contract);
-          // setTimeUntilNext(timeRemaining);
+          const timeRemaining = await getTimeUntilNextRewards(contract);
+          setTimeUntilNext(timeRemaining);
         } catch (contractError) {
           console.error("Error reading from contract:", contractError);
         }
@@ -265,11 +265,11 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Refresh winners list periodically (every 1 minute)
+  // Refresh winners list periodically (every 2 minutes)
   useEffect(() => {
     const interval = setInterval(() => {
       loadWinners();
-    }, 60000);
+    }, 120000);
     
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -356,11 +356,11 @@ function App() {
         <p>Fortune Cookie - Rewarding ZetaChain cross-chain transactions</p>
         <p className="contract-address">
           Contract: <a 
-            href="https://zetachain-testnet.blockscout.com/address/0x973499f438A924F38765539eB9d570543b5b9697" 
+            href="https://zetachain-testnet.blockscout.com/address/0x0bFdA3991d9194075cd5B0c1a7dE58a862b1D247" 
             target="_blank" 
             rel="noopener noreferrer"
           >
-            0x973499f438A924F38765539eB9d570543b5b9697
+            0x0bFdA3991d9194075cd5B0c1a7dE58a862b1D247
           </a>
         </p>
       </footer>
