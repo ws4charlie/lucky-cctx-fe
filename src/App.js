@@ -3,7 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import { formatEther } from 'ethers';
 import WinnersList from './components/WinnersList';
-import { createReadOnlyProvider } from './utils/ethers-provider';
+import {
+  createReadOnlyProvider,
+  ZETACHAIN_CONFIG,
+  ZETACHAIN_CHAIN_ID,
+  ZETACHAIN_CHAIN_ID_DEC,
+  CONTRACT_ADDRESS
+} from './utils/ethers-provider';
 import { 
   connectWallet,
   shortenHash,
@@ -52,7 +58,7 @@ function App() {
       
       // Get network information
       const network = await provider.getNetwork();
-      const isCorrectNetwork = network.chainId === 7001n;
+      const isCorrectNetwork = network.chainId === ZETACHAIN_CHAIN_ID;
       setIsCorrectNetwork(isCorrectNetwork);
       
       // Get contract instance
@@ -88,7 +94,7 @@ function App() {
       // If switching succeeds, reconnect
       if (provider) {
         const network = await provider.getNetwork();
-        const isCorrectNetwork = network.chainId === 7001n;
+        const isCorrectNetwork = network.chainId === ZETACHAIN_CHAIN_ID;
         
         if (isCorrectNetwork) {
           // Refresh contract instance and balance
@@ -243,7 +249,7 @@ function App() {
     
     // Setup chain change listener
     const chainCleanup = setupChainChangeListener((chainId) => {
-      setIsCorrectNetwork(parseInt(chainId, 16) === 7001);
+      setIsCorrectNetwork(parseInt(chainId, 16) === ZETACHAIN_CHAIN_ID_DEC);
     });
     
     // Always load winners first
@@ -362,11 +368,11 @@ function App() {
         <p>Fortune Cookie - Rewarding ZetaChain cross-chain transactions</p>
         <p className="contract-address">
           Contract: <a 
-            href="https://zetachain-testnet.blockscout.com/address/0xd54b34AFCf923Ada37c1fCb7C662E637254351a6" 
+            href={`${ZETACHAIN_CONFIG.blockExplorer}address/${CONTRACT_ADDRESS}`}
             target="_blank" 
             rel="noopener noreferrer"
           >
-            0xd54b34AFCf923Ada37c1fCb7C662E637254351a6
+            {CONTRACT_ADDRESS}
           </a>
         </p>
       </footer>

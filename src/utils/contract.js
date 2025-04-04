@@ -1,8 +1,6 @@
 // src/utils/contract.js
 import { formatEther, parseEther, Contract } from 'ethers';
-
-// Contract address on ZetaChain Athens testnet
-const contractAddress = '0xd54b34AFCf923Ada37c1fCb7C662E637254351a6';
+import { CONTRACT_ADDRESS } from './ethers-provider';
 
 // ABI for the LuckyCCTXs contract - directly from the ABI file
 const contractABI = [
@@ -460,12 +458,12 @@ const getRewardTypeName = (typeNumber) => {
 
 // Get a contract instance with a provider
 export const getContractWithSigner = async (provider) => {
-  return new Contract(contractAddress, contractABI, provider);
+  return new Contract(CONTRACT_ADDRESS, contractABI, provider);
 };
 
 // Get a contract instance without a signer (for read-only operations)
 export const getContractReadOnly = (provider) => {
-  return new Contract(contractAddress, contractABI, provider);
+  return new Contract(CONTRACT_ADDRESS, contractABI, provider);
 };
 
 export const checkUnclaimedRewards = async (contract, userAddress) => {
@@ -526,7 +524,7 @@ export const claimRewards = async (contract) => {
 export const fetchWinners = async (provider) => {
   try {
     console.log("Fetching winners from multiple weeks...");
-    const contract = new Contract(contractAddress, contractABI, provider);
+    const contract = new Contract(CONTRACT_ADDRESS, contractABI, provider);
     
     // Get the latest block number
     const latestBlock = await provider.getBlockNumber();
@@ -644,7 +642,7 @@ export const fetchWinners = async (provider) => {
 export const fetchCurrentWinners = async (provider) => {
   try {
     console.log("Fetching current winners...");
-    const contract = new Contract(contractAddress, contractABI, provider);
+    const contract = new Contract(CONTRACT_ADDRESS, contractABI, provider);
     
     // Get the latest block number
     const latestBlock = await provider.getBlockNumber();

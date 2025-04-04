@@ -1,18 +1,20 @@
 // src/utils/metamask.js
 import { BrowserProvider } from 'ethers';
+import { ZETACHAIN_CONFIG } from './ethers-provider';
+import { ZETACHAIN_CHAIN_ID } from './ethers-provider';
 
-// ZetaChain Athens testnet configuration
-const ZETACHAIN_TESTNET_CONFIG = {
-  chainId: '0x1B59', // 7001 in hex
-  chainName: 'ZetaChain Athens Testnet',
+// ZetaChain configuration
+const CHAIN_CONFIG = {
+  chainId: ZETACHAIN_CONFIG.chainIdHex, // 7000 in hex
+  chainName: ZETACHAIN_CONFIG.name,
   nativeCurrency: {
     name: 'ZETA',
     symbol: 'ZETA',
     decimals: 18,
   },
-  rpcUrls: ['https://zetachain-athens-evm.blockpi.network/v1/rpc/public'],
-  blockExplorerUrls: ['https://zetachain-testnet.blockscout.com/'],
-  zetaScanUrl: 'https://athens.explorer.zetachain.com/cc/',
+  rpcUrls: [ZETACHAIN_CONFIG.rpcUrl],
+  blockExplorerUrls: [ZETACHAIN_CONFIG.blockExplorer],
+  zetaScanUrl: ZETACHAIN_CONFIG.zetaScanUrl,
 };
 
 export const connectWallet = async () => {
@@ -31,7 +33,7 @@ export const connectWallet = async () => {
     const network = await provider.getNetwork();
     
     // Check if we're on ZetaChain Athens testnet
-    if (network.chainId !== 7001n) { // Note the 'n' for BigInt
+    if (network.chainId !== ZETACHAIN_CHAIN_ID) { // Note the 'n' for BigInt
       try {
         await switchToZetaChain();
         // Create a new provider after switching
@@ -65,7 +67,7 @@ export const switchToZetaChain = async () => {
   try {
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: ZETACHAIN_TESTNET_CONFIG.chainId }],
+      params: [{ chainId: CHAIN_CONFIG.chainId }],
     });
   } catch (error) {
     // If the chain hasn't been added to MetaMask
@@ -73,7 +75,7 @@ export const switchToZetaChain = async () => {
       try {
         await window.ethereum.request({
           method: 'wallet_addEthereumChain',
-          params: [ZETACHAIN_TESTNET_CONFIG],
+          params: [CHAIN_CONFIG],
         });
       } catch (addError) {
         throw new Error("Failed to add ZetaChain network to MetaMask: " + addError.message);
@@ -129,17 +131,17 @@ export const isMetaMaskInstalled = () => {
 
 // Get explorer URL for an address
 export const getExplorerAddressUrl = (address) => {
-  return `${ZETACHAIN_TESTNET_CONFIG.blockExplorerUrls[0]}address/${address}`;
+  return `${CHAIN_CONFIG.blockExplorerUrls[0]}address/${address}`;
 };
 
 // Get explorer URL for a transaction
 export const getExplorerTxUrl = (txHash) => {
-  return `${ZETACHAIN_TESTNET_CONFIG.blockExplorerUrls[0]}tx/${txHash}`;
+  return `${CHAIN_CONFIG.blockExplorerUrls[0]}tx/${txHash}`;
 };
 
 // Get ZetaScan URL for a transaction
 export const getZetaScanTxUrl = (txHash) => {
-  return `${ZETACHAIN_TESTNET_CONFIG.zetaScanUrl}tx/${txHash}`;
+  return `${CHAIN_CONFIG.zetaScanUrl}tx/${txHash}`;
 };
 
 // Get a shortened version of a hash
