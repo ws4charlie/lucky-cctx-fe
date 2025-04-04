@@ -501,15 +501,19 @@ export const fetchWinners = async (provider) => {
     // Get the latest block number
     const latestBlock = await provider.getBlockNumber();
     console.log(`Latest block: ${latestBlock}`);
+
+    const lastRewardsBlock = await contract.lastRewardsBlock();
+    console.log(`Last rewards block: ${lastRewardsBlock}`)
     
     // Look back more blocks to find multiple days of events
-    const fromBlock = Math.max(0, latestBlock - 1000); // Increased block range
-    console.log(`Searching from block ${fromBlock} to ${latestBlock}`);
+    const fromBlock = Number(lastRewardsBlock) - 1000;
+    const toBlock = Number(lastRewardsBlock);
+    console.log(`Searching from block ${fromBlock} to ${toBlock}`);
     
     // Create a filter for RewardsSet events
     const filter = contract.filters.RewardsSet();
     
-    const events = await contract.queryFilter(filter, fromBlock, latestBlock);
+    const events = await contract.queryFilter(filter, fromBlock, toBlock);
     console.log(`Found ${events.length} RewardsSet events`);  
     
     // If no events, return empty array

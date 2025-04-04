@@ -38,6 +38,7 @@ function App() {
   const [balance, setBalance] = useState(null);
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [timeUntilNext, setTimeUntilNext] = useState(null);
+  const refreshInProgressRef = useRef(false);
 
   // Handle wallet connection
   const handleConnect = async () => {
@@ -115,6 +116,13 @@ function App() {
   };
 
   const loadWinners = async () => {
+    // Skip if already refreshing
+    if (refreshInProgressRef.current) {
+      console.log("Refresh already in progress, skipping");
+      return;
+    }
+
+    refreshInProgressRef.current = true;
     setLoadingWinners(true);
     
     try {
