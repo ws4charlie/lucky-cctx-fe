@@ -313,7 +313,7 @@ function App() {
       />
       
       <main className="main-content">
-        <h1 className="main-title">Today's Fortune Cookie Winners</h1>
+        <h1 className="main-title">Weekly Fortune Cookie Winners</h1>
         
         {timeUntilNext !== null && timeUntilNext > 0 && (
           <div className="countdown-timer">
@@ -362,11 +362,11 @@ function App() {
         <p>Fortune Cookie - Rewarding ZetaChain cross-chain transactions</p>
         <p className="contract-address">
           Contract: <a 
-            href="https://zetachain-testnet.blockscout.com/address/0x0bFdA3991d9194075cd5B0c1a7dE58a862b1D247" 
+            href="https://zetachain-testnet.blockscout.com/address/0xd54b34AFCf923Ada37c1fCb7C662E637254351a6" 
             target="_blank" 
             rel="noopener noreferrer"
           >
-            0x0bFdA3991d9194075cd5B0c1a7dE58a862b1D247
+            0xd54b34AFCf923Ada37c1fCb7C662E637254351a6
           </a>
         </p>
       </footer>

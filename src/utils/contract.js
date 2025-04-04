@@ -2,7 +2,7 @@
 import { formatEther, parseEther, Contract } from 'ethers';
 
 // Contract address on ZetaChain Athens testnet
-const contractAddress = '0x0bFdA3991d9194075cd5B0c1a7dE58a862b1D247';
+const contractAddress = '0xd54b34AFCf923Ada37c1fCb7C662E637254351a6';
 
 // ABI for the LuckyCCTXs contract - directly from the ABI file
 const contractABI = [
@@ -204,6 +204,21 @@ const contractABI = [
             "type": "uint256"
           },
           {
+            "internalType": "uint256",
+            "name": "chainID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "finalityTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "gasFee",
+            "type": "uint256"
+          },
+          {
             "internalType": "bool",
             "name": "claimed",
             "type": "bool"
@@ -385,6 +400,21 @@ const contractABI = [
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "chainID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "finalityTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gasFee",
+        "type": "uint256"
+      },
+      {
         "internalType": "bool",
         "name": "claimed",
         "type": "bool"
@@ -423,7 +453,7 @@ const getRewardTypeName = (typeNumber) => {
     0: "Lucky CCTX",       // lucky CCTX
     1: "Finality Flash",   // fastest finality
     2: "Gas Ghost",        // lowest gas
-    3: "Tortoise Trophy"  // slowest finality "Patience Pioneer"
+    3: "Tortoise Trophy"   // slowest finality, previous "Patience Pioneer"
   };
   return types[typeNumber] || "Unknown";
 };
@@ -492,10 +522,10 @@ export const claimRewards = async (contract) => {
 
 // src/utils/contract.js - Updated fetchWinners function
 
-// Fetch winners from multiple days
+// Fetch winners from multiple weeks
 export const fetchWinners = async (provider) => {
   try {
-    console.log("Fetching winners from multiple days...");
+    console.log("Fetching winners from multiple weeks...");
     const contract = new Contract(contractAddress, contractABI, provider);
     
     // Get the latest block number
@@ -505,7 +535,7 @@ export const fetchWinners = async (provider) => {
     const lastRewardsBlock = await contract.lastRewardsBlock();
     console.log(`Last rewards block: ${lastRewardsBlock}`)
     
-    // Look back more blocks to find multiple days of events
+    // Look back more blocks to find multiple weeks of events
     const fromBlock = Number(lastRewardsBlock) - 1000;
     const toBlock = Number(lastRewardsBlock);
     console.log(`Searching from block ${fromBlock} to ${toBlock}`);
@@ -519,7 +549,7 @@ export const fetchWinners = async (provider) => {
     // If no events, return empty array
     if (events.length === 0) {
       console.log("No RewardsSet events found");
-      return { today: [], yesterday: [], twoDaysAgo: [] };
+      return { thisWeek: [], lastWeek: [], twoWeeksAgo: [], threeWeeksAgo: [] };
     }
     
     // Sort events by block number in descending order (newest first)
@@ -527,16 +557,16 @@ export const fetchWinners = async (provider) => {
       b.blockNumber - a.blockNumber
     );
     
-    // Process up to 3 most recent events (today, yesterday, day before)
+    // Process up to 4 most recent events (thisWeek, lastWeek, twoWeeksAgo, threeWeeksAgo)
     const processedEvents = {};
     
-    // Labels for each day
-    const labels = ['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo'];
-    
-    // Process each event (up to 3)
+    // Labels for each week
+    const labels = ['thisWeek', 'lastWeek', 'twoWeeksAgo', 'threeWeeksAgo'];
+
+    // Process each event (up to 4)
     for (let i = 0; i < Math.min(sortedEvents.length, 4); i++) {
       const event = sortedEvents[i];
-      const day = labels[i];
+      const week = labels[i];
       
       // Get the block timestamp to display the actual date
       const block = await provider.getBlock(event.blockNumber);
@@ -548,7 +578,7 @@ export const fetchWinners = async (provider) => {
       const rewardTypes = event.args[2]; // Third argument is rewardTypes array
       const cctxIndex = event.args[3]; // Fourth argument is cctxIndex array
       
-      console.log(`Found ${winners.length} winners for ${day} in event at block ${event.blockNumber}`);
+      console.log(`Found ${winners.length} winners for ${week} in event at block ${event.blockNumber}`);
       
       // Create winners list with details
       const winnersList = [];
@@ -556,18 +586,25 @@ export const fetchWinners = async (provider) => {
       for (let j = 0; j < winners.length; j++) {
         // Check if the winner has already claimed their reward
         let rewardsClaimed = false;
+        let chainID = null;
+        let finalityTime = null;
+        let gasFee = null;
+        
         try {
           const rewards = await contract.getUserRewardsHistory(winners[j]);
           
-          // Find the most recent reward for this address that matches the reward from the event
+          // Find the reward that matches this event
           for (let k = rewards.length - 1; k >= 0; k--) {
             if (Number(rewards[k].zetaBlock) === event.blockNumber) {
               rewardsClaimed = rewards[k].claimed;
+              chainID = rewards[k].chainID ? Number(rewards[k].chainID) : null;
+              finalityTime = rewards[k].finalityTime ? Number(rewards[k].finalityTime) : null;
+              gasFee = rewards[k].gasFee ? rewards[k].gasFee.toString() : null;
               break;
             }
           }
         } catch (error) {
-          console.error(`Error checking if rewards claimed for ${winners[j]}:`, error);
+          console.error(`Error checking rewards for ${winners[j]}:`, error);
         }
         
         winnersList.push({
@@ -578,14 +615,17 @@ export const fetchWinners = async (provider) => {
           cctxIndex: cctxIndex[j],
           claimed: rewardsClaimed,
           blockNumber: event.blockNumber,
-          timestamp: timestamp
+          timestamp: timestamp,
+          chainID: chainID,
+          finalityTime: finalityTime,
+          gasFee: gasFee
         });
       }
       
-      processedEvents[day] = winnersList;
+      processedEvents[week] = winnersList;
     }
     
-    // Fill in any missing days with empty arrays
+    // Fill in any missing weeks with empty arrays
     labels.forEach(label => {
       if (!processedEvents[label]) {
         processedEvents[label] = [];
@@ -596,7 +636,7 @@ export const fetchWinners = async (provider) => {
     return processedEvents;
   } catch (error) {
     console.error("Error fetching winners:", error);
-    return { today: [], yesterday: [], twoDaysAgo: [], threeDaysAgo: [] };
+    return { thisWeek: [], lastWeek: [], twoWeeksAgo: [], threeWeeksAgo: [] };
   }
 };
 

@@ -2,13 +2,13 @@
 
 // Calculate top winners by total ZETA amount
 export const calculateTopWinnersByAmount = (winnersData) => {
-    // Combine all days
-    const allDays = ['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo'];
+    // Combine all weeks
+    const allWeeks = ['thisWeek', 'lastWeek', 'twoWeeksAgo', 'threeWeeksAgo'];
     const allWinners = [];
     
-    allDays.forEach(day => {
-      if (winnersData[day] && Array.isArray(winnersData[day])) {
-        allWinners.push(...winnersData[day]);
+    allWeeks.forEach(week => {
+      if (winnersData[week] && Array.isArray(winnersData[week])) {
+        allWinners.push(...winnersData[week]);
       }
     });
     
@@ -48,13 +48,13 @@ export const calculateTopWinnersByAmount = (winnersData) => {
   
   // Calculate top winners by frequency
   export const calculateTopWinnersByFrequency = (winnersData) => {
-    // Combine all days
-    const allDays = ['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo'];
+    // Combine all weeks
+    const allWeeks = ['thisWeek', 'lastWeek', 'twoWeeksAgo', 'threeWeeksAgo'];
     const allWinners = [];
     
-    allDays.forEach(day => {
-      if (winnersData[day] && Array.isArray(winnersData[day])) {
-        allWinners.push(...winnersData[day]);
+    allWeeks.forEach(week => {
+      if (winnersData[week] && Array.isArray(winnersData[week])) {
+        allWinners.push(...winnersData[week]);
       }
     });
     

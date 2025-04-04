@@ -8,7 +8,7 @@ const { parseEther, formatEther, Contract } = require("ethers");
 const RPC_URL = process.env.RPC_URL;
 
 // Contract address on ZetaChain Athens testnet
-const CONTRACT_ADDRESS = '0x0bFdA3991d9194075cd5B0c1a7dE58a862b1D247';
+const CONTRACT_ADDRESS = '0xd54b34AFCf923Ada37c1fCb7C662E637254351a6';
 
 const provider = new JsonRpcProvider(RPC_URL);
 
@@ -35,6 +35,21 @@ const CONTRACT_ABI = [
         "internalType": "string[]",
         "name": "cctxIndices",
         "type": "string[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "chainIDs",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "finalityTimes",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "gasFees",
+        "type": "uint256[]"
       }
     ],
     "name": "setRewards",
@@ -63,6 +78,58 @@ const RewardType = {
   FinalityFlash: 1,
   GasGhost: 2,
   PatiencePioneer: 3
+};
+
+// Import chain configuration (create a CommonJS version for Node.js)
+const SUPPORTED_CHAINS = {
+  // Mainnet chains
+  1: {
+    name: 'Ethereum',
+    shortName: 'ETH',
+  },
+  56: {
+    name: 'BNB Chain',
+    shortName: 'BNB',
+  },
+  137: {
+    name: 'Polygon',
+    shortName: 'MATIC',
+  },
+  8453: {
+    name: 'Base',
+    shortName: 'BASE',
+  },
+  8332: {
+    name: 'Bitcoin',
+    shortName: 'BTC',
+  },
+  
+  // Testnet chains
+  11155111: {
+    name: 'Ethereum Sepolia',
+    shortName: 'SEP',
+  },
+  97: {
+    name: 'BNB Testnet',
+    shortName: 'tBNB',
+  },
+  80002: {
+    name: 'Polygon Amoy',
+    shortName: 'AMOY',
+  },
+  84532: {
+    name: 'Base Sepolia',
+    shortName: 'bSEP',
+  },
+  18334: {
+    name: 'Bitcoin Testnet4',
+    shortName: 'tBTC',
+  }
+};
+
+// Get an array of supported chain IDs for random selection
+const getSupportedChainIds = () => {
+  return Object.keys(SUPPORTED_CHAINS).map(id => parseInt(id));
 };
 
 async function main() {
@@ -97,20 +164,28 @@ async function main() {
     console.log("----------------------------------------");
     for (let i = 0; i < testData.winners.length; i++) {
       const rewardTypeName = Object.keys(RewardType).find(key => RewardType[key] === testData.rewardTypes[i]);
+      const chainName = SUPPORTED_CHAINS[testData.chainIDs[i]]?.name || 'Unknown Chain';
+      
       console.log(`Winner: ${testData.winners[i]}`);
       console.log(`Reward Type: ${rewardTypeName} (${testData.rewardTypes[i]})`);
       console.log(`Amount: ${formatEther(testData.amounts[i])} ZETA`);
       console.log(`CCTX: ${testData.cctxIndices[i]}`);
+      console.log(`Chain ID: ${testData.chainIDs[i]} (${chainName})`);
+      console.log(`Finality Time: ${testData.finalityTimes[i]} seconds`);
+      console.log(`Gas Fee: ${formatEther(testData.gasFees[i])} (chain native)`);
       console.log("----------------------------------------");
     }
     
-    // Call setRewards method with new parameter
+    // Call setRewards method with all parameters
     console.log("\nSending transaction...");
     const tx = await contractWithSigner.setRewards(
       testData.rewardTypes,
       testData.winners,
       testData.amounts,
-      testData.cctxIndices
+      testData.cctxIndices,
+      testData.chainIDs,
+      testData.finalityTimes,
+      testData.gasFees
     );
     
     console.log(`Transaction sent: ${tx.hash}`);
@@ -139,22 +214,20 @@ function generateTestRewardsData() {
     "0xEbA816378707e47f18320e672603c7790058a936",
     "0xeB28B665C1aDBA260a5465a450398c1EaA052F08",
     "0xcdB2b5041eD88E7AFcD6383992E38AB148B4831c",
-    "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
     "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"
   ];
   
   // Generate reward types (a mix of all types)
   const rewardTypes = [
     RewardType.LuckyCCTX,
-    RewardType.LuckyCCTX,
     RewardType.FinalityFlash,
     RewardType.GasGhost,
     RewardType.PatiencePioneer
   ];
   
-  // Generate amounts (between 0.01 and 0.1 ZETA)
+  // Generate amounts (between 0.001 and 0.01 ZETA)
   const amounts = testAddresses.map(() => {
-    const amount = 0.001 + Math.random() * 0.009; // Random amount between 0.01 and 0.1
+    const amount = 0.001 + Math.random() * 0.009; // Random amount between 0.001 and 0.01
     return parseEther(amount.toFixed(6)); // Convert to wei with 6 decimal precision
   });
   
@@ -163,15 +236,38 @@ function generateTestRewardsData() {
     "0x83bcb2bc85f8d577ef7e27d1a9c47cd6b200954c0f4b02be5897bb7446942f63",
     "0x6c66f1c573c5e97e85de7b557df9026ce68621d4a0b45de8a9e4dafe435f2e8f",
     "0x4262f634530d4102ed15f13b8a190cc6cde1375b8f264ba8fd52d04e72d56cb5",
-    "0xe887411ed653a10d384564d68e52503f3890753acd2abfa5d13dd244dd735949",
     "0x7f2101b8dbb5025746005ae7a179adaeaf7c666aa12cec7ebbcb283a3dfa1813"
   ];
+
+  // Generate random chain IDs from supported chains
+  const supportedChainIds = getSupportedChainIds();
+  const chainIDs = testAddresses.map(() => {
+    const randomIndex = Math.floor(Math.random() * supportedChainIds.length);
+    return supportedChainIds[randomIndex];
+  });
+
+  // Generate random finality times (10 seconds to 5 minutes)
+  const finalityTimes = testAddresses.map(() => {
+    // Finality times biased by reward type
+    const baseTime = 10; // Base time in seconds
+    const randomTime = Math.floor(Math.random() * 290) + baseTime; // Random time between 10 and 300 seconds
+    return randomTime;
+  });
+
+  // Generate random gas fees (0.0001 to 0.01 in native token)
+  const gasFees = testAddresses.map(() => {
+    const gasFee = 0.0001 + Math.random() * 0.0099; // Random fee between 0.0001 and 0.01
+    return parseEther(gasFee.toFixed(6)); // Convert to wei with 6 decimal precision
+  });
   
   return {
     rewardTypes,
     winners: testAddresses,
     amounts,
-    cctxIndices
+    cctxIndices,
+    chainIDs,
+    finalityTimes,
+    gasFees
   };
 }
 

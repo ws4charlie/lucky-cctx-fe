@@ -319,21 +319,21 @@
     color: inherit;
   }
 
-  /* Winners by day styles */
-  .winners-by-day {
+  /* Winners by week styles */
+  .winners-by-week {
     display: flex;
     flex-direction: column;
     gap: 2rem;
   }
   
-  .day-winners-section {
+  .week-winners-section {
     background-color: var(--card-background);
     border-radius: 0.5rem;
     padding: 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
   
-  .day-heading {
+  .week-heading {
     font-size: 1.25rem;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
@@ -341,29 +341,29 @@
     color: var(--text-color);
   }
   
-  /* Today's winners should have a special highlight */
-  .day-winners-section:first-child {
+  /* This week's winners should have a special highlight */
+  .week-winners-section:first-child {
     background-color: rgba(99, 102, 241, 0.05);
     border: 1px solid rgba(99, 102, 241, 0.1);
   }
   
-  .day-winners-section:first-child .day-heading {
+  .week-winners-section:first-child .week-heading {
     color: var(--primary-color);
   }
   
   /* Responsive adjustments */
   @media (max-width: 768px) {
-    .day-winners-section {
+    .week-winners-section {
       padding: 1rem;
     }
     
-    .day-heading {
+    .week-heading {
       font-size: 1.125rem;
     }
   }
   
-  /* Optional: Add a smooth transition between days */
-  .day-winners-section {
+  /* Optional: Add a smooth transition between weeks */
+  .week-winners-section {
     transition: all 0.3s ease;
   }
   
@@ -514,6 +514,15 @@
   }
   
   .claimed-badge {
+    /* Increase the width or make it auto */
+    width: auto;
+    min-width: 80px; /* Ensure minimum width to fit content */
+    
+    /* Make sure overflow is visible */
+    white-space: nowrap;
+    overflow: visible;
+    
+    /* Other existing styles can remain */
     background-color: var(--success-color);
     color: white;
     font-size: 0.75rem;
@@ -522,12 +531,67 @@
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    width: auto;  /* Allow width to adjust to content */
-    max-width: 80px;  /* Limit maximum width */
-    white-space: nowrap;  /* Prevent text wrapping */
-    overflow: hidden;  /* Hide overflow */
-    text-overflow: ellipsis;  /* Add ellipsis if too long */
   }
+
+  /* Badges container */
+.reward-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Chain badge styling */
+.chain-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Additional details section */
+.winner-additional-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-light);
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.detail-label {
+  font-weight: 500;
+}
+
+.detail-value {
+  font-family: monospace;
+}
+
+.detail-full-width {
+  width: 100%;
+}
+
+/* Adjust spacing between stacked detail items */
+.detail-full-width + .detail-full-width {
+  margin-top: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .winner-additional-details {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
 
   /* Leaderboard styles */
   .leaderboard-container {

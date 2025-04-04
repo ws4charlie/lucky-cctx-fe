@@ -14,11 +14,11 @@ const WinnersList = ({
 }) => {
   const [activeTab, setActiveTab] = useState('leaderboard'); // Default to leaderboard
   
-  // Destructure winners by day
-  const { today = [], yesterday = [], twoDaysAgo = [], threeDaysAgo = [] } = winners;
+  // Destructure winners by week
+  const { thisWeek = [], lastWeek = [], twoWeeksAgo = [], threeWeeksAgo = [] } = winners;
   
   // All winners combined
-  const allWinners = [...today, ...yesterday, ...twoDaysAgo, ...threeDaysAgo];
+  const allWinners = [...thisWeek, ...lastWeek, ...twoWeeksAgo, ...threeWeeksAgo];
   
   // Calculate leaderboard data - memoized to prevent recalculation on every render
   const topWinnersByAmount = useMemo(() => 
@@ -48,38 +48,38 @@ const WinnersList = ({
     return date.toLocaleString();
   };
   
-  // Get human-readable day label
-  const getDayLabel = (day) => {
-    switch(day) {
-      case 'today': return 'Today';
-      case 'yesterday': return 'Yesterday';
-      case 'twoDaysAgo': return 'Two Days Ago';
-      case 'threeDaysAgo': return 'Three Days Ago';
-      default: return day;
+  // Get human-readable week label
+  const getWeekLabel = (week) => {
+    switch(week) {
+      case 'thisWeek': return 'This Week';
+      case 'lastWeek': return 'Last Week';
+      case 'twoWeeksAgo': return 'Two Weeks Ago';
+      case 'threeWeeksAgo': return 'Three Weeks Ago';
+      default: return week;
     }
   };
   
   // Filtered winners based on active tab
   const getFilteredWinners = () => {
     if (activeTab === 'all') {
-      return { today, yesterday, twoDaysAgo, threeDaysAgo };
+      return { thisWeek, lastWeek, twoWeeksAgo, threeWeeksAgo };
     }
     
     if (activeTab === 'leaderboard') {
-      return { today, yesterday, twoDaysAgo, threeDaysAgo };
+      return { thisWeek, lastWeek, twoWeeksAgo, threeWeeksAgo };
     }
     
-    // Filter winners of the selected type for each day
-    const filteredToday = today.filter(winner => winner.rewardType.toString() === activeTab);
-    const filteredYesterday = yesterday.filter(winner => winner.rewardType.toString() === activeTab);
-    const filteredTwoDaysAgo = twoDaysAgo.filter(winner => winner.rewardType.toString() === activeTab);
-    const filteredThreeDaysAgo = threeDaysAgo.filter(winner => winner.rewardType.toString() === activeTab);
+    // Filter winners of the selected type for each week
+    const filteredThisWeek = thisWeek.filter(winner => winner.rewardType.toString() === activeTab);
+    const filteredLastWeek = lastWeek.filter(winner => winner.rewardType.toString() === activeTab);
+    const filteredTwoWeeksAgo = twoWeeksAgo.filter(winner => winner.rewardType.toString() === activeTab);
+    const filteredThreeWeeksAgo = threeWeeksAgo.filter(winner => winner.rewardType.toString() === activeTab);
 
     return {
-      today: filteredToday,
-      yesterday: filteredYesterday,
-      twoDaysAgo: filteredTwoDaysAgo,
-      threeDaysAgo: filteredThreeDaysAgo
+      thisWeek: filteredThisWeek,
+      lastWeek: filteredLastWeek,
+      twoWeeksAgo: filteredTwoWeeksAgo,
+      threeWeeksAgo: filteredThreeWeeksAgo
     };
   };
   
@@ -155,21 +155,21 @@ const WinnersList = ({
       
       {/* Regular Winners View for other tabs */}
       {activeTab !== 'leaderboard' && (
-        <div className="winners-by-day">
-          {['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo'].map(day => {
-            const dayWinners = filteredWinners[day] || [];
+        <div className="winners-by-week">
+          {['thisWeek', 'lastWeek', 'twoWeeksAgo', 'threeWeeksAgo'].map(week => {
+            const weekWinners = filteredWinners[week] || [];
             
-            // Skip if no winners for this day
-            if (dayWinners.length === 0) return null;
+            // Skip if no winners for this week
+            if (weekWinners.length === 0) return null;
             
             return (
-              <div key={day} className="day-winners-section">
-                <h3 className="day-heading">Winners {getDayLabel(day)}</h3>
+              <div key={week} className="week-winners-section">
+                <h3 className="week-heading">Winners {getWeekLabel(week)}</h3>
                 
                 <div className="winners-list-grid">
-                  {dayWinners.map((winner, index) => (
+                  {weekWinners.map((winner, index) => (
                     <WinnerItem
-                      key={`${winner.address}-${day}-${index}`}
+                      key={`${winner.address}-${week}-${index}`}
                       winner={winner}
                       isCurrentUser={currentUserAddress?.toLowerCase() === winner.address.toLowerCase()}
                       onClaimReward={onClaimReward}

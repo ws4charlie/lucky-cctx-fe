@@ -1,6 +1,7 @@
 // src/components/WinnerItem.js
 import React from 'react';
 import { formatAddress, getExplorerAddressUrl, getZetaScanTxUrl } from '../utils/metamask';
+import { getChainInfo, formatFinalityTime, formatGasFee } from '../utils/chains';
 
 // Get reward type icon
 export const getRewardTypeIcon = (rewardType) => {
@@ -52,6 +53,9 @@ const WinnerItem = ({
     }
   };
 
+  // Get chain information
+  const chainInfo = getChainInfo(winner.chainID);
+
   return (
     <div className={`winner-item ${isCurrentUser ? 'current-user' : ''}`}>
       <div className="winner-info">
@@ -68,10 +72,43 @@ const WinnerItem = ({
         </div>
         
         <div className="winner-reward-details">
-          <span className={`reward-type-badge ${getBadgeColor(winner.rewardType)}`}>
-            {getRewardTypeIcon(winner.rewardType)} {winner.rewardTypeName}
-          </span>
-          <div className="winner-amount">{winner.amount} ZETA</div>
+          <div className="reward-badges">
+            <span className={`reward-type-badge ${getBadgeColor(winner.rewardType)}`}>
+              {getRewardTypeIcon(winner.rewardType)} {winner.rewardTypeName}
+            </span>
+            
+            {winner.chainID && (
+              <span 
+                className="chain-badge"
+                style={{
+                  backgroundColor: `${chainInfo.color}15`,
+                  color: chainInfo.color,
+                  border: `1px solid ${chainInfo.color}30`
+                }}
+              >
+                {chainInfo.icon} {chainInfo.name}
+              </span>
+            )}
+          </div>
+          
+          <div className="winner-amount">rewards: {winner.amount} ZETA</div>
+          
+          {/* Additional details section */}
+          <div className="winner-additional-details">
+            {(winner.finalityTime && (parseInt(winner.rewardType) === 1 || parseInt(winner.rewardType) === 3)) && (
+              <div className="detail-item detail-full-width">
+                <span className="detail-label">Finality:</span>
+                <span className="detail-value">{formatFinalityTime(winner.finalityTime)}</span>
+              </div>
+            )}
+            
+            {(winner.gasFee && parseInt(winner.rewardType) === 2) && (
+              <div className="detail-item detail-full-width">
+                <span className="detail-label">Gas Fee:</span>
+                <span className="detail-value">{formatGasFee(winner.gasFee, winner.chainID)}</span>
+              </div>
+            )}
+          </div>
         </div>
         
         {/* Transaction Link - Now last */}
@@ -89,21 +126,21 @@ const WinnerItem = ({
         )}
       </div>
       
-        {isCurrentUser && !winner.claimed && (
-          <button 
-            className="claim-button" 
-            onClick={() => onClaimReward(winner)}
-            disabled={claimingInProgress}
-          >
-            {claimingInProgress ? 'Claiming...' : 'Claim Reward'}
-          </button>
-        )}
-        
-        {winner.claimed && (
-          <div className="claimed-badge">
-            ✓ Claimed
-          </div>
-        )}
+      {isCurrentUser && !winner.claimed && (
+        <button 
+          className="claim-button" 
+          onClick={() => onClaimReward(winner)}
+          disabled={claimingInProgress}
+        >
+          {claimingInProgress ? 'Claiming...' : 'Claim Reward'}
+        </button>
+      )}
+      
+      {winner.claimed && (
+        <div className="claimed-badge">
+          ✓ Claimed
+        </div>
+      )}
     </div>
   );
 };
