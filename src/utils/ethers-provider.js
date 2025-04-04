@@ -2,7 +2,7 @@
 import { ethers } from 'ethers';
 
 // ZetaChain Athens testnet RPC URL
-const ZETACHAIN_RPC_URL = 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public';
+const ZETACHAIN_RPC_URL = 'https://zetachain-evm.blockpi.network/v1/rpc/public';
 
 // Create a read-only provider for ZetaChain Athens testnet
 export const createReadOnlyProvider = () => {
