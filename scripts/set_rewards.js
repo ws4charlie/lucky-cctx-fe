@@ -136,9 +136,9 @@ async function main() {
 function generateTestRewardsData() {
   // Generate some random addresses for testing
   const testAddresses = [
-    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+    "0xEbA816378707e47f18320e672603c7790058a936",
     "0xeB28B665C1aDBA260a5465a450398c1EaA052F08",
-    "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "0xcdB2b5041eD88E7AFcD6383992E38AB148B4831c",
     "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
     "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"
   ];

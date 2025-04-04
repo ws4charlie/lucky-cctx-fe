@@ -1,6 +1,8 @@
 // src/components/WinnersList.js
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import WinnerItem, { getRewardTypeIcon } from './WinnerItem';
+import LeaderboardView from './LeaderboardView';
+import { calculateTopWinnersByAmount, calculateTopWinnersByFrequency } from '../utils/leaderboard';
 
 const WinnersList = ({ 
   winners, 
@@ -10,13 +12,24 @@ const WinnersList = ({
   loading,
   lastUpdateTime
 }) => {
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState('leaderboard'); // Default to leaderboard
   
   // Destructure winners by day
   const { today = [], yesterday = [], twoDaysAgo = [], threeDaysAgo = [] } = winners;
   
   // All winners combined
   const allWinners = [...today, ...yesterday, ...twoDaysAgo, ...threeDaysAgo];
+  
+  // Calculate leaderboard data - memoized to prevent recalculation on every render
+  const topWinnersByAmount = useMemo(() => 
+    calculateTopWinnersByAmount(winners), 
+    [winners]
+  );
+  
+  const topWinnersByFrequency = useMemo(() => 
+    calculateTopWinnersByFrequency(winners), 
+    [winners]
+  );
   
   // Group all winners by reward type
   const winnersByType = allWinners.reduce((acc, winner) => {
@@ -49,6 +62,10 @@ const WinnersList = ({
   // Filtered winners based on active tab
   const getFilteredWinners = () => {
     if (activeTab === 'all') {
+      return { today, yesterday, twoDaysAgo, threeDaysAgo };
+    }
+    
+    if (activeTab === 'leaderboard') {
       return { today, yesterday, twoDaysAgo, threeDaysAgo };
     }
     
@@ -97,6 +114,13 @@ const WinnersList = ({
       
       <div className="winners-tabs">
         <button 
+          className={`tab-button ${activeTab === 'leaderboard' ? 'active' : ''}`}
+          onClick={() => setActiveTab('leaderboard')}
+        >
+          🏆 Leaderboard
+        </button>
+        
+        <button 
           className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
           onClick={() => setActiveTab('all')}
         >
@@ -120,33 +144,44 @@ const WinnersList = ({
         })}
       </div>
       
-      {/* Now iterate through each day */}
-      <div className="winners-by-day">
-        {['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo'].map(day => {
-          const dayWinners = filteredWinners[day] || [];
-          
-          // Skip if no winners for this day
-          if (dayWinners.length === 0) return null;
-          
-          return (
-            <div key={day} className="day-winners-section">
-              <h3 className="day-heading">Winners {getDayLabel(day)}</h3>
-              
-              <div className="winners-list-grid">
-                {dayWinners.map((winner, index) => (
-                  <WinnerItem
-                    key={`${winner.address}-${day}-${index}`}
-                    winner={winner}
-                    isCurrentUser={currentUserAddress?.toLowerCase() === winner.address.toLowerCase()}
-                    onClaimReward={onClaimReward}
-                    claimingInProgress={claimingInProgress}
-                  />
-                ))}
+      {/* Leaderboard View */}
+      {activeTab === 'leaderboard' && (
+        <LeaderboardView 
+          topWinnersByAmount={topWinnersByAmount}
+          topWinnersByFrequency={topWinnersByFrequency}
+          currentUserAddress={currentUserAddress}
+        />
+      )}
+      
+      {/* Regular Winners View for other tabs */}
+      {activeTab !== 'leaderboard' && (
+        <div className="winners-by-day">
+          {['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo'].map(day => {
+            const dayWinners = filteredWinners[day] || [];
+            
+            // Skip if no winners for this day
+            if (dayWinners.length === 0) return null;
+            
+            return (
+              <div key={day} className="day-winners-section">
+                <h3 className="day-heading">Winners {getDayLabel(day)}</h3>
+                
+                <div className="winners-list-grid">
+                  {dayWinners.map((winner, index) => (
+                    <WinnerItem
+                      key={`${winner.address}-${day}-${index}`}
+                      winner={winner}
+                      isCurrentUser={currentUserAddress?.toLowerCase() === winner.address.toLowerCase()}
+                      onClaimReward={onClaimReward}
+                      claimingInProgress={claimingInProgress}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

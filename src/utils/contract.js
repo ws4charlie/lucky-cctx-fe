@@ -423,7 +423,7 @@ const getRewardTypeName = (typeNumber) => {
     0: "Lucky CCTX",       // lucky CCTX
     1: "Finality Flash",   // fastest finality
     2: "Gas Ghost",        // lowest gas
-    3: "Patience Pioneer"  // slowest finality
+    3: "Tortoise Trophy"  // slowest finality "Patience Pioneer"
   };
   return types[typeNumber] || "Unknown";
 };
