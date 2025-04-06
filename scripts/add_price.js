@@ -1,7 +1,8 @@
-// scripts/change-admin.js
+// scripts/add_price.js
 require('dotenv').config();
 const { ethers } = require('ethers');
 const { JsonRpcProvider } = require("ethers");
+const { parseEther, formatEther, Contract } = require("ethers");
 
 // ZetaChain Athens testnet RPC URL
 const RPC_URL = process.env.RPC_URL;
@@ -9,20 +10,20 @@ const RPC_URL = process.env.RPC_URL;
 // Contract address on ZetaChain
 const CONTRACT_ADDRESS = '0x5BDF642ebB29B11d97e03B73beCbcE36bBf5ce17';
 
-// Your new owner address
-const NEW_OWNER_ADDRESS = '0xBB8cC1baDD3ec0a27bDFB100A7e425B598670De4';
+// The ZETA supply value to set
+const ZETA_SUPPLY = '49119753702712500000';
 
-// Minimal ABI for the transferOwnership function
+// Minimal ABI for the AddPriceFeed function
 const CONTRACT_ABI = [
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "newSupply",
+        "type": "uint256"
       }
     ],
-    "name": "transferOwnership",
+    "name": "AddPriceFeed",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -51,14 +52,11 @@ async function main() {
     if (!CONTRACT_ADDRESS) {
       throw new Error("CONTRACT_ADDRESS not set in environment");
     }
-    if (!NEW_OWNER_ADDRESS) {
-      throw new Error("NEW_OWNER_ADDRESS not set in environment");
-    }
     
     // Check if private key is available
     const privateKey = process.env.TEST_PK;
     if (!privateKey) {
-      throw new Error("Private key not found. Please set PRIVATE_KEY or TEST_PK in your .env file");
+      throw new Error("Private key not found. Please set TEST_PK in your .env file");
     }
 
     console.log("Setting up provider and wallet...");
@@ -74,22 +72,16 @@ async function main() {
     
     console.log(`Current contract owner: ${currentOwner}`);
     console.log(`Wallet address: ${walletAddress}`);
-    console.log(`New owner address: ${NEW_OWNER_ADDRESS}`);
     
     // Verify the wallet is the current owner
     if (currentOwner.toLowerCase() !== walletAddress.toLowerCase()) {
       throw new Error("The provided private key is not the current owner of the contract");
     }
     
-    // Verify the new owner address is valid
-    if (!ethers.isAddress(NEW_OWNER_ADDRESS)) {
-      throw new Error("Invalid new owner address");
-    }
+    console.log(`\nSetting ZETA supply to: ${ZETA_SUPPLY}`);
     
-    console.log("\nTransferring ownership...");
-    
-    // Transfer ownership
-    const tx = await contractWithSigner.transferOwnership(NEW_OWNER_ADDRESS);
+    // Call AddPriceFeed function
+    const tx = await contractWithSigner.AddPriceFeed(ZETA_SUPPLY);
     
     console.log(`Transaction sent: ${tx.hash}`);
     console.log("Waiting for confirmation...");
@@ -99,7 +91,7 @@ async function main() {
     
     console.log(`Transaction confirmed in block ${receipt.blockNumber}`);
     console.log(`Gas used: ${receipt.gasUsed.toString()}`);
-    console.log(`\nOwnership successfully transferred to ${NEW_OWNER_ADDRESS}!`);
+    console.log(`\nZETA supply successfully updated!`);
     
   } catch (error) {
     console.error("Error:", error.message);
@@ -117,3 +109,4 @@ main()
     console.error(error);
     process.exit(1);
   });
+  

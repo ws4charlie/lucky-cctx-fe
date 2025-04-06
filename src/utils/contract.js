@@ -10,6 +10,11 @@ const contractABI = [
         "internalType": "address",
         "name": "owner",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalSupplyRWtoken",
+        "type": "uint256"
       }
     ],
     "stateMutability": "payable",
@@ -118,8 +123,47 @@ const contractABI = [
     "type": "event"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newSupply",
+        "type": "uint256"
+      }
+    ],
+    "name": "AddPriceFeed",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "CurrentSupplyZeta",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "EPOCH_TIME",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "TotalSupplyRWtoken",
     "outputs": [
       {
         "internalType": "uint256",
@@ -459,6 +503,52 @@ const contractABI = [
     "type": "receive"
   }
 ];
+
+// Get the ZETA token supply
+export const getZetaSupply = async (contract) => {
+  try {
+    const supply = await contract.CurrentSupplyZeta();
+    return supply;
+  } catch (error) {
+    console.error("Error getting ZETA supply:", error);
+    return null;
+  }
+};
+
+// Get the RW token total supply
+export const getRWTokenSupply = async (contract) => {
+  try {
+    const supply = await contract.TotalSupplyRWtoken();
+    return supply;
+  } catch (error) {
+    console.error("Error getting RWToken supply:", error);
+    return null;
+  }
+};
+
+// Calculate conversion rate
+export const getConversionRate = async (contract) => {
+  try {
+    const zetaSupply = await getZetaSupply(contract);
+    const rwTokenSupply = await getRWTokenSupply(contract);
+    
+    if (!zetaSupply || !rwTokenSupply || rwTokenSupply.toString() === '0') {
+      return null;
+    }
+    
+    // Convert from BigInt to string for calculation
+    const zetaSupplyValue = Number(formatEther(zetaSupply));
+    const rwTokenSupplyValue = Number(formatEther(rwTokenSupply));
+    
+    // Calculate rate
+    const rate = zetaSupplyValue / rwTokenSupplyValue;
+    
+    return rate;
+  } catch (error) {
+    console.error("Error calculating conversion rate:", error);
+    return null;
+  }
+};
 
 // Helper function to convert reward type number to a readable name
 const getRewardTypeName = (typeNumber) => {

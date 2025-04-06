@@ -14,7 +14,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "set-rewards": "node scripts/set_rewards.js",
-    "change-admin": "node scripts/change_admin.js"
+    "change-admin": "node scripts/change_admin.js",
+    "add-price": "node scripts/add_price.js"
   },
   "eslintConfig": {
     "extends": [
