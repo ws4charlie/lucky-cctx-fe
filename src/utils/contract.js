@@ -316,6 +316,21 @@ const contractABI = [
         "internalType": "string[]",
         "name": "cctxIndices",
         "type": "string[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "chainIDs",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "finalityTimes",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "gasFees",
+        "type": "uint256[]"
       }
     ],
     "name": "setRewards",
@@ -443,7 +458,7 @@ const contractABI = [
     "stateMutability": "payable",
     "type": "receive"
   }
- ];
+];
 
 // Helper function to convert reward type number to a readable name
 const getRewardTypeName = (typeNumber) => {
