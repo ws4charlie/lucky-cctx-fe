@@ -8,7 +8,7 @@ const { parseEther, formatEther, Contract } = require("ethers");
 const RPC_URL = process.env.RPC_URL;
 
 // Contract address on ZetaChain
-const CONTRACT_ADDRESS = '0xf7DFC30F475f33FDE90867fF4EDEAf03e3154447';
+const CONTRACT_ADDRESS = '0x0840E50eacBCF898B09Bd386A55E92E981835F91';
 
 const provider = new JsonRpcProvider(RPC_URL);
 
@@ -146,7 +146,7 @@ async function main() {
       
       console.log(`Winner: ${testData.winners[i]}`);
       console.log(`Reward Type: ${rewardTypeName} (${testData.rewardTypes[i]})`);
-      console.log(`Amount: ${formatEther(testData.amounts[i])} ZETA`);
+      console.log(`Amount: ${formatEther(testData.amounts[i])} rwZETA`);
       console.log(`CCTX: ${testData.cctxIndices[i]}`);
       console.log(`Chain ID: ${testData.chainIDs[i]} (${chainName})`);
       console.log(`Finality Time: ${testData.finalityTimes[i]} seconds`);

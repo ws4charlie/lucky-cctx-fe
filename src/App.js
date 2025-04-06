@@ -25,6 +25,7 @@ import {
   fetchWinners,
   claimRewards,
   checkUnclaimedRewards,
+  getConversionRate,
   getUnclaimedRewardsAmount,
 } from './utils/contract';
 import './styles/App.css';
@@ -44,6 +45,7 @@ function App() {
   const [balance, setBalance] = useState(null);
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [timeUntilNext, setTimeUntilNext] = useState(null);
+  const [conversionRate, setConversionRate] = useState(null);
   const refreshInProgressRef = useRef(false);
 
   // Handle wallet connection
@@ -121,6 +123,23 @@ function App() {
     }
   };
 
+  const fetchConversionRate = async () => {
+    try {
+      // Use existing contract or create a read-only one
+      const currentContract = contract || getContractReadOnly(createReadOnlyProvider());
+      
+      if (!currentContract) {
+        console.warn("No contract available to fetch conversion rate");
+        return;
+      }
+      
+      const rate = await getConversionRate(currentContract);
+      setConversionRate(rate);
+    } catch (error) {
+      console.error("Error fetching conversion rate:", error);
+    }
+  };
+
   const loadWinners = async () => {
     // Skip if already refreshing
     if (refreshInProgressRef.current) {
@@ -141,6 +160,9 @@ function App() {
   
       const winnersData = await fetchWinners(currentProvider);
       setWinners(winnersData);
+
+      // fetch rwZETA/ZETA rate
+      fetchConversionRate();
       
       // Keep existing contract-related logic if contract exists
       if (contract) {
@@ -191,7 +213,7 @@ function App() {
       // Show success message
       setSuccessMessage(
         <div>
-          Successfully claimed {rewardAmount} ZETA! Transaction:{' '}
+          Successfully claimed {rewardAmount} rwZETA! Transaction:{' '}
           <a 
             href={getExplorerTxUrl(tx.transactionHash)} 
             target="_blank" 
@@ -281,6 +303,7 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       loadWinners();
+      fetchConversionRate();
     }, 300000);
     
     return () => clearInterval(interval);
@@ -316,6 +339,7 @@ function App() {
         isCorrectNetwork={isCorrectNetwork}
         onSwitchNetwork={handleSwitchNetwork}
         userBalance={balance}
+        conversionRate={conversionRate}
       />
       
       <main className="main-content">

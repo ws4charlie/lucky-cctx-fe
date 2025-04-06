@@ -22,19 +22,21 @@ const LeaderboardView = ({
                   <span className="rank-badge">{winner.badge}</span>
                 </div>
                 <div className="leaderboard-details">
-                  <a 
-                    href={getExplorerAddressUrl(winner.address)} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="leaderboard-address"
-                  >
-                    {formatAddress(winner.address)}
-                  </a>
-                  {winner.address.toLowerCase() === currentUserAddress?.toLowerCase() && (
-                    <span className="you-badge">You</span>
-                  )}
+                  <div className="leaderboard-address-container">
+                    <a 
+                      href={getExplorerAddressUrl(winner.address)} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="leaderboard-address"
+                    >
+                      {formatAddress(winner.address)}
+                    </a>
+                    {winner.address.toLowerCase() === currentUserAddress?.toLowerCase() && (
+                      <span className="you-badge-leaderboard">You</span>
+                    )}
+                  </div>
                   <div className="leaderboard-value">
-                    <strong>Total: {winner.totalAmount.toFixed(6)} ZETA</strong>
+                    <strong>Total: {winner.totalAmount.toFixed(6)} rwZETA</strong>
                   </div>
                   <div className="leaderboard-subvalue">
                     Won {winner.count} {winner.count === 1 ? 'time' : 'times'}
@@ -61,22 +63,24 @@ const LeaderboardView = ({
                   <span className="rank-badge">{winner.badge}</span>
                 </div>
                 <div className="leaderboard-details">
-                  <a 
-                    href={getExplorerAddressUrl(winner.address)} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="leaderboard-address"
-                  >
-                    {formatAddress(winner.address)}
-                  </a>
-                  {winner.address.toLowerCase() === currentUserAddress?.toLowerCase() && (
-                    <span className="you-badge">You</span>
-                  )}
+                  <div className="leaderboard-address-container">
+                    <a 
+                      href={getExplorerAddressUrl(winner.address)} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="leaderboard-address"
+                    >
+                      {formatAddress(winner.address)}
+                    </a>
+                    {winner.address.toLowerCase() === currentUserAddress?.toLowerCase() && (
+                      <span className="you-badge-leaderboard">You</span>
+                    )}
+                  </div>
                   <div className="leaderboard-value">
                     <strong>Won {winner.count} {winner.count === 1 ? 'time' : 'times'}</strong>
                   </div>
                   <div className="leaderboard-subvalue">
-                    Total: {winner.totalAmount.toFixed(6)} ZETA
+                    Total: {winner.totalAmount.toFixed(6)} rwZETA
                   </div>
                 </div>
               </div>

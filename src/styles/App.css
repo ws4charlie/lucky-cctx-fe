@@ -231,6 +231,135 @@
   .network-banner-button:hover {
     background-color: #c2410c;
   }
+
+  /* Conversion rate display */
+.conversion-rate-display {
+  background-color: #f0f7ff; /* Light blue background */
+  color: #0369a1; /* Blue text color */
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-right: 0.5rem;
+  border: 1px solid rgba(3, 105, 161, 0.2);
+}
+
+.conversion-label {
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #0284c7; /* Slightly darker blue for label */
+}
+
+.conversion-value {
+  font-weight: 600;
+  font-family: monospace;
+}
+
+/* Update wallet info to handle multiple items better */
+.wallet-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+/* Main wrapper for the wallet balance section */
+.wallet-balance-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Top row with balance and address */
+.wallet-top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Make balance display consistent with conversion rate */
+.balance-display {
+  background-color: #f0fdf4; /* Light green background */
+  color: #166534; /* Green text color */
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid rgba(22, 101, 52, 0.2);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Address display - keep existing styles */
+.address-display {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+/* Conversion rate display */
+.conversion-rate-display {
+  background-color: #eef3fb; /* Lighter blue background */
+  color: #0369a1; /* Blue text color */
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  border: 1px solid rgba(3, 105, 161, 0.15);
+  text-align: center;
+  width: auto;
+  align-self: flex-start; /* Align to the start (left) of the container */
+  margin-left: 3px; /* Small indent */
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+
+.conversion-label {
+  font-weight: 500;
+  color: #0369a1; /* Match main text color */
+}
+
+.conversion-value {
+  font-weight: 600;
+  font-family: monospace;
+}
+
+/* Wallet info container adjustments */
+.wallet-info {
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .wallet-top-row {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  
+  .wallet-balance-wrapper {
+    align-items: flex-end;
+  }
+  
+  .conversion-rate-display {
+    align-self: flex-end;
+    margin-left: 0;
+  }
+}
   
   /* Main content styles */
   .main-content {
@@ -593,174 +722,210 @@
   }
 }
 
-  /* Leaderboard styles */
-  .leaderboard-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1rem 0;
-  }
+/* Leaderboard styles */
+.leaderboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem 0;
+}
 
-  .leaderboard-section {
-    background-color: var(--card-background);
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
+.leaderboard-section {
+  background-color: var(--card-background);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
-  .leaderboard-title {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-color);
-    text-align: center;
-  }
+.leaderboard-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
+  text-align: center;
+}
 
+.leaderboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: var(--card-background);
+}
+
+.leaderboard-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.leaderboard-item.current-user {
+  border-color: var(--primary-color);
+  background-color: rgba(99, 102, 241, 0.05);
+}
+
+.leaderboard-rank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 1rem;
+  border-radius: 50%;
+  background-color: var(--background-color);
+  flex-shrink: 0;
+}
+
+/* Gold winner */
+.leaderboard-item:nth-child(1) {
+  background: linear-gradient(to bottom right, #FFF9E5, #FFEDAC);
+  border-color: #FFD700;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 215, 0, 0.15);
+}
+
+/* Silver winner */
+.leaderboard-item:nth-child(2) {
+  background: linear-gradient(to bottom right, #F8F8F8, #D4D4D4);
+  border-color: #A9A9A9;
+  box-shadow: 0 4px 12px rgba(169, 169, 169, 0.2);
+}
+
+/* Bronze winner */
+.leaderboard-item:nth-child(3) {
+  background: linear-gradient(to bottom right, #F5EBE0, #E0C9B1);
+  border-color: #CD7F32;
+  box-shadow: 0 4px 12px rgba(205, 127, 50, 0.15);
+}
+
+.rank-badge {
+  font-size: 1.5rem;
+}
+
+.leaderboard-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0; /* Prevent flex item from overflowing */
+}
+
+/* Address container with fixed You badge */
+.leaderboard-address-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0.25rem;
+}
+
+.leaderboard-address {
+  font-family: monospace;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 50px); /* Leave space for the badge */
+}
+
+.leaderboard-address:hover {
+  text-decoration: underline;
+}
+
+/* Fixed compact You badge */
+.you-badge-leaderboard {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.125rem 0.3rem;
+  border-radius: 0.25rem;
+  display: inline-block;
+  min-width: 30px;
+  max-width: 40px;
+  height: 18px;
+  line-height: 1.2;
+  margin-left: 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.leaderboard-value {
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leaderboard-subvalue {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leaderboard-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+/* Animation for leaderboard items */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.leaderboard-item {
+  animation: slideInUp 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.leaderboard-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.leaderboard-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.leaderboard-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .leaderboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+    grid-template-columns: 1fr;
   }
-
-  .leaderboard-item {
-    display: flex;
-    align-items: center;
+  
+  .leaderboard-section {
     padding: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
-    transition: transform 0.2s, box-shadow 0.2s;
-    background-color: var(--card-background);
   }
-
-  .leaderboard-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  
+  .leaderboard-title {
+    font-size: 1.125rem;
   }
-
-  .leaderboard-item.current-user {
-    border-color: var(--primary-color);
-    background-color: rgba(99, 102, 241, 0.05);
-  }
-
-  .leaderboard-rank {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    margin-right: 1rem;
-    border-radius: 50%;
-    background-color: var(--background-color);
-  }
-
-  /* Gold winner */
-  .leaderboard-item:nth-child(1) {
-    background: linear-gradient(to bottom right, #FFF9E5, #FFEDAC);
-    border-color: #FFD700;
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(255, 215, 0, 0.15);
-  }
-
-  /* Silver winner */
-  .leaderboard-item:nth-child(2) {
-    background: linear-gradient(to bottom right, #F5F5F5, #E0E0E0);
-    border-color: #C0C0C0;
-    box-shadow: 0 4px 12px rgba(192, 192, 192, 0.15);
-  }
-
-  /* Bronze winner */
-  .leaderboard-item:nth-child(3) {
-    background: linear-gradient(to bottom right, #F5EBE0, #E0C9B1);
-    border-color: #CD7F32;
-    box-shadow: 0 4px 12px rgba(205, 127, 50, 0.15);
-  }
-
-  .rank-badge {
-    font-size: 1.5rem;
-  }
-
-  .leaderboard-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .leaderboard-address {
-    font-family: monospace;
-    color: var(--text-color);
-    text-decoration: none;
-    font-size: 0.875rem;
-    display: inline-block;
-    margin-right: 0.5rem;
-  }
-
-  .leaderboard-address:hover {
-    text-decoration: underline;
-  }
-
-  .leaderboard-value {
-    font-size: 0.9rem;
-    margin-top: 0.25rem;
-  }
-
-  .leaderboard-subvalue {
-    font-size: 0.8rem;
-    color: var(--text-light);
-  }
-
-  .leaderboard-empty {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-light);
-    font-style: italic;
-  }
-
-  /* Animation for leaderboard items */
-  @keyframes slideInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .leaderboard-item {
-    animation: slideInUp 0.3s ease-out;
-    animation-fill-mode: both;
-  }
-
-  .leaderboard-item:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-
-  .leaderboard-item:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-
-  .leaderboard-item:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .leaderboard-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    .leaderboard-section {
-      padding: 1rem;
-    }
-    
-    .leaderboard-title {
-      font-size: 1.125rem;
-    }
-  }
+}
   
   /* Loading states */
   .winners-loading {
