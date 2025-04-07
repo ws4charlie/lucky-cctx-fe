@@ -21,10 +21,8 @@ Fortune Cookie is a ZetaHub extension that adds a layer of excitement to cross-c
 - **1. 🏆 Weekly rewards:** for users performing cross-chain transactions (CCTXs)
 
 - **2. 🎮 Gamifies the ZetaChain experience** and enhances user engagement
-<br />
 
 - **3. 🤝 Creates a lively community atmosphere** by adding an element of chance and skill
-<br />
 
 - **4. 📣 Supports ZetaChain's marketing efforts** by incentivizing specific CCTXs.
 
