@@ -43,6 +43,22 @@ export const SUPPORTED_CHAINS = {
       isTestnet: false,
       color: '#F7931A' // Bitcoin orange
     },
+    7000: {
+      name: 'ZetaChain',
+      shortName: 'ZETA',
+      icon: '', // Or use custom icon: '/assets/images/zetachain.svg' 
+      blockExplorer: 'https://explorer.zetachain.com',
+      isTestnet: false,
+      color: '#6558FF' // ZetaChain purple
+    },
+    900: {  // The Solana chain ID in decimal
+      name: 'Solana',
+      shortName: 'SOL',
+      icon: '◎',  // Solana symbol
+      blockExplorer: 'https://explorer.solana.com',
+      isTestnet: false,
+      color: '#14F195' // Solana green
+    },
     
     // Testnet chains
     11155111: {
@@ -84,6 +100,15 @@ export const SUPPORTED_CHAINS = {
       blockExplorer: 'https://blockstream.info/testnet',
       isTestnet: true,
       color: '#F7931A' // Bitcoin orange
+    },
+    7001: {
+      name: 'ZetaChain Athens',
+      shortName: 'aZETA',
+      icon: 'Z', // Or use custom icon: '/assets/images/zetachain.svg'
+      blockExplorer: 'https://zetachain-testnet.blockscout.com/',
+      zetaScanUrl: 'https://athens.explorer.zetachain.com/cc/',
+      isTestnet: true,
+      color: '#6558FF' // ZetaChain purple
     }
   };
   

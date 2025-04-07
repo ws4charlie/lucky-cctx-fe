@@ -709,6 +709,9 @@ export const fetchWinners = async (provider) => {
         } catch (error) {
           console.error(`Error checking rewards for ${winners[j]}:`, error);
         }
+
+
+        //console.log("winnerType", rewardTypes[j], "finalityTime", finalityTime, "gasFee", gasFee);
         
         winnersList.push({
           address: winners[j],

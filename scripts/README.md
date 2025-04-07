@@ -1,77 +1,173 @@
-# Admin Scripts for Lucky CCTX
+# 🍪 Fortune Cookie
 
-This directory contains administration scripts for the Lucky CCTX application.
+## 🎯 Bringing a Bit Fun to Cross-Chain Transactions on ZetaChain
 
-## Setting Rewards
+<br />
 
-These scripts allow you to set rewards for the Lucky CCTX contract using your admin private key.
+## 👥 Our Team
 
-### Prerequisites
+| Name | Role |
+|------|------|
+| **Tanmay** | Backend Development |
+| **SrdJan Simonovic** | Smart Contract Development |
+| **Charlie Chen** | Frontend Development |
 
-1. Install dependencies:
-   ```
-   npm install dotenv
-   ```
+<br />
 
-2. Create a `.env` file:
-   - Copy the `.env.template` file to `.env`
-   - Add your private key to the `TEST_PK_EVM` variable (without the 0x prefix)
+## 🤔 What is Fortune Cookie?
 
-### Basic Usage
+Fortune Cookie is a ZetaHub extension that adds a layer of excitement to cross-chain transactions by rewarding users based on various metrics.
 
-You can set rewards with random test data using:
+- **1. 🏆 Weekly rewards:** for users performing cross-chain transactions (CCTXs)
 
-```bash
-npm run set-rewards
-```
+- **2. 🎮 Gamifies the ZetaChain experience** and enhances user engagement
+<br />
+- **3. 🤝 Creates a lively community atmosphere** by adding an element of chance and skill
+<br />
+- **4. 📣 Supports ZetaChain's marketing efforts** by incentivizing specific CCTXs.
 
-This will:
-- Connect to the ZetaChain Athens testnet
-- Verify you're the contract owner
-- Generate random test reward data
-- Call the `setRewards` method on the contract
+<br />
+> 🍪 Just like a fortune cookie brings an unexpected treat, our project delivers surprise rewards to lucky CCTX users!
 
-### Advanced Usage
+<br />
 
-For more control, you can use the advanced script:
+## 🎯 Why Fortune Cookie?
 
-```bash
-npm run set-rewards-advanced
-```
+| Icon | Benefit | Description |
+|------|---------|-------------|
+| 🚀 | Enhances User Experience | Adds fun and excitement to an otherwise technical process |
+| 🌱 | Encourages Adoption | Motivates new users to try cross-chain transactions |
+| 🔄 | Drives Network Activity | Increases transaction volume across chains |
+| 🌐 | Builds Community | Creates talking points and shared experiences among users |
 
-This script supports the following options:
+<br />
 
-```
-Options:
-  --address <addr>     Add a winner address
-  --type <type>        Reward type (0: LuckyCCTX, 1: FinalityFlash, 2: GasGhost)
-  --amount <amount>    Amount in ZETA
-  --add                Add this entry to the list (use after specifying address, type, and amount)
-  --clear              Clear the current list
-  --default            Use default test data (this is the default behavior)
-```
+## 🎲 How It Works
 
-#### Examples
+### 📅 Weekly Draws
+Based on statistical analysis, we select winners from a pool of CCTX every week
 
-Use default random data:
-```bash
-npm run set-rewards-advanced
-```
+### 🏅 Multiple Winning Categories
+- **🎲 Lucky CCTX** - Randomly selected transactions (VRF-powered)
+<br />
 
-Add custom winners:
-```bash
-npm run set-rewards-advanced -- --clear --address 0x123... --type 0 --amount 0.5 --add --address 0x456... --type 1 --amount 0.8 --add
-```
+- **⚡ Finality Flash** - Fastest transaction finality time per chain
+<br />
 
-Get help:
-```bash
-npm run set-rewards-advanced -- --help
-```
+- **👻 Gas Ghost** - Lowest gas fee transactions per chain
+<br />
 
-## Troubleshooting
+- **🐢 Tortoise Trophy** - Slowest finality time per chain
 
-If you encounter any issues:
+<br />
 
-1. **Contract Owner Mismatch**: Make sure your private key corresponds to the contract owner.
-2. **RPC Connection Issues**: You can set a custom RPC URL in the `.env` file.
-3. **Gas Errors**: Ensure your wallet has enough ZETA to pay for gas.
+## 🎳 Unpredictable & Fair
+
+Winners are genuinely unpredictable because:
+
+- **🎲 Random Selection** - VRF (Verifiable Random Function) ensures true randomness
+- **⏱️ Performance Metrics** - Transaction speed and gas prices are unpredictable
+- **🌈 Cross-Chain Variety** - Different blockchain conditions create natural variability
+- **🎯 Multiple Reward Types** - Diverse categories ensure different users have chances to win
+
+<br />
+
+## 💰 Reward Token: rwZETA
+
+![Reward Token System](https://placeholder-image.com/token-system.png)
+
+- **🔧 Flexible Reward System** - rwZETA is pegged to ZETA but allows for customization
+- **🔄 Conversion Rate** - Configurable rate between rwZETA and ZETA
+- **🚀 Future Expansion** - Possibility for staking rewards before claiming
+- **💸 Lower Gas Costs** - Optimized for rewarding many users efficiently
+
+<br />
+
+## 🛠️ Customizable Reward Strategies
+
+![Customizable Strategies](https://placeholder-image.com/strategies.png)
+
+Fortune Cookie can be tailored to support various ZetaChain initiatives:
+
+- **🌐 Chain-Specific Promotions** - Increase rewards for transactions on newly launched chains
+- **⏰ Time-Limited Campaigns** - Run special events during specific timeframes
+- **🎯 Targeted Incentives** - Reward specific transaction types or value thresholds
+- **👥 Community Challenges** - Create special categories based on community feedback
+
+<br />
+
+## 🏗️ System Architecture
+
+![System Architecture](https://placeholder-image.com/architecture.png)
+
+### Three-Component System
+
+1. **🖥️ Off-chain Admin Service** (Centralized)
+   - Analyzes CCTX statistics weekly
+   - Selects winners based on configured metrics
+   - Submits winner data to smart contract
+
+2. **📜 Smart Contract** (Decentralized)
+   - Stores winner information securely on-chain
+   - Manages reward distribution
+   - Provides transparent reward history
+
+3. **🌍 User-Friendly Frontend** (Decentralized Interface)
+   - Displays winners by category
+   - Shows leaderboards for top earners
+   - Allows winners to claim rewards with MetaMask
+
+<br />
+
+## 🔄 Data Flow
+
+![Data Flow](https://placeholder-image.com/data-flow.png)
+
+1. 👥 Users perform cross-chain transactions through ZetaHub
+2. 🕵️ Admin service analyzes transactions weekly
+3. 🏆 Winners and reward amounts are submitted to smart contract
+4. 📊 Frontend displays winners and leaderboards
+5. 💳 Winners connect wallets and claim rewards
+6. 💰 Smart contract distributes rwZETA tokens
+
+<br />
+
+## 💻 Technical Implementation
+
+| Component | Technology |
+|-----------|------------|
+| **Backend** | Node.js service with ZetaChain API integration |
+| **Smart Contract** | Solidity contract deployed on ZetaChain |
+| **Frontend** | React application with Web3 wallet integration |
+| **Analytics** | Custom metrics processing for fair winner selection |
+| **Security** | Multi-layer validation for claiming process |
+
+<br />
+
+## 🎮 Demo & Features
+
+![Fortune Cookie Interface](https://placeholder-image.com/interface.png)
+
+- **📊 Leaderboard** - Showcases top earners and most frequent winners
+- **🏷️ Category Tabs** - Filter winners by reward type
+- **🖱️ Claim Process** - Simple one-click reward claiming
+- **📜 Transaction History** - View past rewards and metrics
+- **⏳ Real-time Updates** - Countdown to next reward distribution
+
+<br />
+
+## 🚀 Future Expansion
+
+- **📊 Additional Metrics** - More ways to win rewards
+- **🏅 Enhanced Gamification** - Achievement badges and streaks
+- **👥 Community Governance** - Allow users to propose new reward categories
+- **💱 Multi-token Support** - Expand beyond rwZETA to other tokens
+- **🔗 Integration with Other ZetaChain Products** - Seamless ecosystem experience
+
+<br />
+
+## 🙏 Thank You!
+
+**🍪 Fortune Cookie**: Making cross-chain transactions more rewarding
+
+Try it today at: [https://fortune-cookie.zetachain.com](https://fortune-cookie.zetachain.com)

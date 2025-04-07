@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 export const ZETACHAIN_CHAIN_ID = 7000n;
 export const ZETACHAIN_CHAIN_ID_DEC = 7000;
 export const ZETACHAIN_CHAIN_ID_HEX = '0x1B58'; // 7000 in hex
-export const CONTRACT_ADDRESS = '0x0840E50eacBCF898B09Bd386A55E92E981835F91';
+export const CONTRACT_ADDRESS = '0xdB466D34D45638558e01e6c0f4da3A7De500cdAB';
 
 // ZetaChain network configuration
 export const ZETACHAIN_CONFIG = {
