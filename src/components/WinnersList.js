@@ -12,7 +12,7 @@ const WinnersList = ({
   loading,
   lastUpdateTime
 }) => {
-  const [activeTab, setActiveTab] = useState('leaderboard'); // Default to leaderboard
+  const [activeTab, setActiveTab] = useState('all'); // Default to leaderboard
   
   // Destructure winners by week
   const { thisWeek = [], lastWeek = [], twoWeeksAgo = [], threeWeeksAgo = [] } = winners;
