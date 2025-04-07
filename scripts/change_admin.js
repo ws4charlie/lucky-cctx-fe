@@ -7,7 +7,7 @@ const { JsonRpcProvider } = require("ethers");
 const RPC_URL = process.env.RPC_URL;
 
 // Contract address on ZetaChain
-const CONTRACT_ADDRESS = '0x5BDF642ebB29B11d97e03B73beCbcE36bBf5ce17';
+const CONTRACT_ADDRESS = '0x79EE15e8A98F7b9f765D6bfAe7c1DC78100B0C41';
 
 // Your new owner address
 const NEW_OWNER_ADDRESS = '0xBB8cC1baDD3ec0a27bDFB100A7e425B598670De4';

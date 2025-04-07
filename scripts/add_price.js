@@ -8,10 +8,10 @@ const { parseEther, formatEther, Contract } = require("ethers");
 const RPC_URL = process.env.RPC_URL;
 
 // Contract address on ZetaChain
-const CONTRACT_ADDRESS = '0x5BDF642ebB29B11d97e03B73beCbcE36bBf5ce17';
+const CONTRACT_ADDRESS = '0x79EE15e8A98F7b9f765D6bfAe7c1DC78100B0C41';
 
 // The ZETA supply value to set
-const ZETA_SUPPLY = '49119753702712500000';
+const ZETA_SUPPLY = '32746502468475000000';
 
 // Minimal ABI for the AddPriceFeed function
 const CONTRACT_ABI = [
