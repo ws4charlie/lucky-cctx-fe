@@ -59,6 +59,14 @@ export const SUPPORTED_CHAINS = {
       isTestnet: false,
       color: '#14F195' // Solana green
     },
+    42161: {
+      name: 'Arbitrum',
+      shortName: 'ARB',
+      icon: '🟧', // Red circle for Arbitrum
+      blockExplorer: 'https://arbiscan.io',
+      isTestnet: false,
+      color: '#28A0F0' // Arbitrum blue
+    },
     
     // Testnet chains
     11155111: {
