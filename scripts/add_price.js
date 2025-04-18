@@ -8,7 +8,7 @@ const { parseEther, formatEther, Contract } = require("ethers");
 const RPC_URL = process.env.RPC_URL;
 
 // Contract address on ZetaChain
-const CONTRACT_ADDRESS = '0x79EE15e8A98F7b9f765D6bfAe7c1DC78100B0C41';
+const CONTRACT_ADDRESS = '0x592dC2b7338D73d68982B8af71bb91a63E2289f2';
 
 // The ZETA supply value to set
 const ZETA_SUPPLY = '32746502468475000000';
