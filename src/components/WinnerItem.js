@@ -91,7 +91,7 @@ const WinnerItem = ({
             )}
           </div>
           
-          <div className="winner-amount">rewards: {winner.amount} rwZETA</div>
+          <div className="winner-amount">rewards: {winner.amount} ZETA</div>
           
           {/* Additional details section */}
           <div className="winner-additional-details">

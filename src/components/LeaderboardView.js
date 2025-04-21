@@ -36,7 +36,7 @@ const LeaderboardView = ({
                     )}
                   </div>
                   <div className="leaderboard-value">
-                    <strong>Total: {winner.totalAmount.toFixed(6)} rwZETA</strong>
+                    <strong>Total: {winner.totalAmount.toFixed(6)} ZETA</strong>
                   </div>
                   <div className="leaderboard-subvalue">
                     Won {winner.count} {winner.count === 1 ? 'time' : 'times'}
@@ -80,7 +80,7 @@ const LeaderboardView = ({
                     <strong>Won {winner.count} {winner.count === 1 ? 'time' : 'times'}</strong>
                   </div>
                   <div className="leaderboard-subvalue">
-                    Total: {winner.totalAmount.toFixed(6)} rwZETA
+                    Total: {winner.totalAmount.toFixed(6)} ZETA
                   </div>
                 </div>
               </div>

@@ -161,7 +161,7 @@ function App() {
       const winnersData = await fetchWinners(currentProvider);
       setWinners(winnersData);
 
-      // fetch rwZETA/ZETA rate
+      // fetch ZETA/ZETA rate
       fetchConversionRate();
       
       // Keep existing contract-related logic if contract exists
@@ -213,7 +213,7 @@ function App() {
       // Show success message
       setSuccessMessage(
         <div>
-          Successfully claimed {rewardAmount} rwZETA! Transaction:{' '}
+          Successfully claimed {rewardAmount} ZETA! Transaction:{' '}
           <a 
             href={getExplorerTxUrl(tx.transactionHash)} 
             target="_blank" 

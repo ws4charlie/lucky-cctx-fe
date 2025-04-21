@@ -1,6 +1,6 @@
 // Helper functions to calculate leaderboard statistics
 
-// Calculate top winners by total rwZETA amount
+// Calculate top winners by total reward amount
 export const calculateTopWinnersByAmount = (winnersData) => {
     // Combine all weeks
     const allWeeks = ['thisWeek', 'lastWeek', 'twoWeeksAgo', 'threeWeeksAgo'];

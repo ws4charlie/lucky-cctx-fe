@@ -146,7 +146,7 @@ async function main() {
       
       console.log(`Winner: ${testData.winners[i]}`);
       console.log(`Reward Type: ${rewardTypeName} (${testData.rewardTypes[i]})`);
-      console.log(`Amount: ${formatEther(testData.amounts[i])} rwZETA`);
+      console.log(`Amount: ${formatEther(testData.amounts[i])} ZETA`);
       console.log(`CCTX: ${testData.cctxIndices[i]}`);
       console.log(`Chain ID: ${testData.chainIDs[i]} (${chainName})`);
       console.log(`Finality Time: ${testData.finalityTimes[i]} seconds`);
