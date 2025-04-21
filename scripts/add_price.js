@@ -11,7 +11,7 @@ const RPC_URL = process.env.RPC_URL;
 const CONTRACT_ADDRESS = '0xdB466D34D45638558e01e6c0f4da3A7De500cdAB';
 
 // The ZETA supply value to set
-const ZETA_SUPPLY = '49119753702712500000';
+const ZETA_SUPPLY = '32746502468475000000';
 
 // Minimal ABI for the AddPriceFeed function
 const CONTRACT_ABI = [
